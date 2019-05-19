@@ -6,21 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>ZZQ的博客</title>
+  <title>ZZQ的</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与后端服务性能优化以及服务架构。非专业视觉设计师。此为博客一枚。">
 <meta name="keywords" content="前端,js,jquery,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验,JAVA,java,C#,redis,rabbitmq,nginx,tomcat,jvm">
 <meta property="og:type" content="website">
-<meta property="og:title" content="ZZQ的博客">
+<meta property="og:title" content="ZZQ的">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="ZZQ的博客">
+<meta property="og:site_name" content="ZZQ的">
 <meta property="og:description" content="华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与后端服务性能优化以及服务架构。非专业视觉设计师。此为博客一枚。">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ZZQ的博客">
+<meta name="twitter:title" content="ZZQ的">
 <meta name="twitter:description" content="华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与后端服务性能优化以及服务架构。非专业视觉设计师。此为博客一枚。">
   
-    <link rel="alternative" href="/atom.xml" title="ZZQ的博客" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="ZZQ的" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -47,10 +47,10 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="/go.jpg" class="js-avatar">
+			<img src="/img/go2.png" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">ZZQ</a></h1>
+		  <h1 class="header-author"><a href="/">ZZQ的</a></h1>
 		</hgroup>
 		
 		<p class="header-subtitle">一只程序猿</p>
@@ -105,10 +105,10 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="/go.jpg" class="js-avatar">
+				<img src="/img/go2.png" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">ZZQ</h1>
+			  <h1 class="header-author js-header-author">ZZQ的</h1>
 			</hgroup>
 			
 			<p class="header-subtitle"><i class="icon icon-quo-left"></i>一只程序猿<i class="icon icon-quo-right"></i></p>
@@ -153,6 +153,148 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-zuul-怎么工作的？" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/19/zuul-怎么工作的？/">zuul 怎么工作的？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/19/zuul-怎么工作的？/" class="archive-article-date">
+  	<time datetime="2019-05-19T15:37:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-什么是zuul"><a href="#1-什么是zuul" class="headerlink" title="1.什么是zuul"></a>1.什么是zuul</h2><p>我们都知道微服务(如果不知道,小火鸡需要多看看书了)</p>
+<p>将复杂的业务功能进行拆分一个一个的服务,每个服务实现一个功能,把功能组合一起,就形成了微服务架构</p>
+<p>zuul 就是微服务统一对外提供的路由网关</p>
+<h3 id="1-1-什么是路由网关呀"><a href="#1-1-什么是路由网关呀" class="headerlink" title="1.1 什么是路由网关呀?"></a>1.1 什么是路由网关呀?</h3><p><strong>打个比方</strong></p>
+<p>你住在小区的一栋楼中,每一栋楼就是一个微服务,大门就是网关啦</p>
+<h3 id="1-2-zuul有啥用呢"><a href="#1-2-zuul有啥用呢" class="headerlink" title="1.2 zuul有啥用呢?"></a>1.2 zuul有啥用呢?</h3><ul>
+<li><p>认证和鉴权</p>
+</li>
+<li><p>压力控制</p>
+</li>
+<li><p>动态路由</p>
+</li>
+<li><p>负载消减</p>
+</li>
+<li><p>静态响应处理</p>
+</li>
+<li><p>主动流量管控</p>
+</li>
+</ul>
+<h3 id="1-3-是不是zuul的逻辑引擎只能用java编写"><a href="#1-3-是不是zuul的逻辑引擎只能用java编写" class="headerlink" title="1.3 是不是zuul的逻辑引擎只能用java编写?"></a>1.3 是不是zuul的逻辑引擎只能用java编写?</h3><p><strong>No</strong> 还可以用Groovy,(不要局限于某种语言,因为你是一只程序员)</p>
+<p><todo> 关于zuul的配置,这些呢,网上一搜一大片,我就不说了,我们看看源码把</todo></p>
+<h2 id="2-源码剖析"><a href="#2-源码剖析" class="headerlink" title="2. 源码剖析"></a>2. 源码剖析</h2><h3 id="2-1-使用idea看看zuul的依赖"><a href="#2-1-使用idea看看zuul的依赖" class="headerlink" title="2.1 使用idea看看zuul的依赖"></a>2.1 使用idea看看zuul的依赖</h3><p>在不了解zuul的情况下先看看zuul 依赖呢那些包,然后推断下zuul 的功能是由那些基础包提供的</p>
+<ul>
+<li><p><img src="..\..\public\img\zuul\depend.jpg" alt="\public\img\zuul\depend"></p>
+</li>
+<li><p>zuul 应该有服务熔断降级功能</p>
+</li>
+<li><p>zuul 应该有负载均衡功能</p>
+</li>
+</ul>
+<h3 id="2-2-debug-运行追踪代码"><a href="#2-2-debug-运行追踪代码" class="headerlink" title="2.2 debug 运行追踪代码"></a>2.2 debug 运行追踪代码</h3><p><strong>在哪里debug ?</strong></p>
+<ul>
+<li><p>一个请求进来,spring体系肯定使用的springmvc ,我们就从spring mvc 的前端控制器看 <code>DispatcherServlet</code></p>
+</li>
+<li><p>springmvc 的机制是,请求过来,DispatcherServlet 委托HandlerMapping 去映射到一个handler,因此我们在DispatcherServlet 的getHandler() 方法打上断点</p>
+</li>
+<li><p>根据spring 这货,推测zuul 的handlerMapping 应该就叫 ZuulHandlerMapping</p>
+</li>
+</ul>
+<p>使用idea  Ctrl +N 验证下,确实存在</p>
+<h4 id="2-2-3-ZuulHandlerMapping"><a href="#2-2-3-ZuulHandlerMapping" class="headerlink" title="2.2.3 ZuulHandlerMapping"></a>2.2.3 ZuulHandlerMapping</h4><ul>
+<li>首先看下属性</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> RouteLocator routeLocator; <span class="comment">//这个东西根据英语单词意思应该是 路径定位器</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ZuulController zuul; <span class="comment">// 这个东西应该是Handler</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> ErrorController errorController;  <span class="comment">//这个东西应该是error Handler</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> PathMatcher pathMatcher = <span class="keyword">new</span> AntPathMatcher(); <span class="comment">//这个东西应该是路径解析器</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">boolean</span> dirty = <span class="keyword">true</span>;  <span class="comment">//这个应该是一个多线程操作的标识符号</span></span><br></pre></td></tr></table></figure>
+<p>看下构造器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ZuulHandlerMapping</span><span class="params">(RouteLocator routeLocator, ZuulController zuul)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">this</span>.routeLocator = routeLocator;  </span><br><span class="line">	<span class="keyword">this</span>.zuul = zuul;</span><br><span class="line">	setOrder(-<span class="number">200</span>);  <span class="comment">//给自己设置一个 排名 我们点进去看看</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发现<code>setOrder</code>这个方法是<code>AbstractUrlHandlerMapping</code> 父类的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">	/**</span><br><span class="line">	 * Specify the order value for this HandlerMapping bean.</span><br><span class="line">	 * &lt;p&gt;The default value is &#123;@code Ordered.LOWEST_PRECEDENCE&#125;, meaning non-ordered.</span><br><span class="line">	 * @see org.springframework.core.Ordered#getOrder()</span><br><span class="line">	 */</span><br><span class="line">	public void setOrder(int order) &#123;</span><br><span class="line">		this.order = order;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	private int order = Ordered.LOWEST_PRECEDENCE;  // default: same as non-Ordered</span><br><span class="line">// 意思是这个类的优先级最低</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> Object <span class="title">lookupHandler</span><span class="params">(String urlPath, HttpServletRequest request)</span> <span class="comment">//查找handler 应该是根据url 找到对应的handler</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.errorController != <span class="keyword">null</span></span><br><span class="line">				&amp;&amp; urlPath.equals(<span class="keyword">this</span>.errorController.getErrorPath())) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (isIgnoredPath(urlPath, <span class="keyword">this</span>.routeLocator.getIgnoredPaths())) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		RequestContext ctx = RequestContext.getCurrentContext();</span><br><span class="line">		<span class="keyword">if</span> (ctx.containsKey(<span class="string">"forward.to"</span>)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.dirty) &#123;</span><br><span class="line">			<span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">				<span class="keyword">if</span> (<span class="keyword">this</span>.dirty) &#123;</span><br><span class="line">					registerHandlers();</span><br><span class="line">					<span class="keyword">this</span>.dirty = <span class="keyword">false</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">super</span>.lookupHandler(urlPath, request);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法是从父类继承下来的,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Look up a handler instance for the given URL path.</span><br><span class="line">Supports direct matches, e.g. a registered &quot;/test&quot; matches &quot;/test&quot;, and various Ant-style pattern matches, e.g. a registered &quot;/t*&quot; matches both &quot;/test&quot; and &quot;/team&quot;. For details, see the AntPathMatcher class.</span><br><span class="line">Looks for the most exact pattern, where most exact is defined as the longest path pattern.</span><br></pre></td></tr></table></figure>
+<p>查找给定URL路径的处理程序实例。  支持直接匹配，例如注册的“/test”匹配“/test”，以及各种ant样式的模式匹配，例如注册的“/t*”匹配“/test”和“/team”。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isIgnoredPath</span><span class="params">(String urlPath, Collection&lt;String&gt; ignored)</span> </span>&#123;  <span class="comment">//这个方法对应properties 配置,判断是否为隐藏路径</span></span><br><span class="line">		<span class="keyword">if</span> (ignored != <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">for</span> (String ignoredPath : ignored) &#123; <span class="comment">//遍历这个集合,集合中存放的就是我们在properties 中配置的需要隐藏的服务路径</span></span><br><span class="line">				<span class="keyword">if</span> (<span class="keyword">this</span>.pathMatcher.match(ignoredPath, urlPath)) &#123;</span><br><span class="line">					<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">registerHandlers</span><span class="params">()</span> </span>&#123;  <span class="comment">//注册Handlers</span></span><br><span class="line">		Collection&lt;Route&gt; routes = <span class="keyword">this</span>.routeLocator.getRoutes(); <span class="comment">//获取配置文件中配置的所有的匹配匹配规则</span></span><br><span class="line">		<span class="keyword">if</span> (routes.isEmpty()) &#123;</span><br><span class="line">			<span class="keyword">this</span>.logger.warn(<span class="string">"No routes found from RouteLocator"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">for</span> (Route route : routes) &#123;</span><br><span class="line">				registerHandler(route.getFullPath(), <span class="keyword">this</span>.zuul);<span class="comment">//然后注册到属性zuul中</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看下这个zuul 这个属性是个什么东西 ,zuul这个东西就是一个controller ,意思应该是把配置文件中配置的映射关系映射到controller中</p>
+<h4 id="2-3-4-RouteLocator"><a href="#2-3-4-RouteLocator" class="headerlink" title="2.3.4 RouteLocator"></a>2.3.4 RouteLocator</h4><p>我们看下定位器的源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RouteLocator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Ignored route paths (or patterns), if any.</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> &#123;<span class="doctag">@link</span> Collection&#125; of ignored paths</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function">Collection&lt;String&gt; <span class="title">getIgnoredPaths</span><span class="params">()</span></span>;  <span class="comment">//获取隐藏的服务接口</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * A map of route path (pattern) to location (e.g. service id or URL).</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> &#123;<span class="doctag">@link</span> List&#125; of routes</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function">List&lt;Route&gt; <span class="title">getRoutes</span><span class="params">()</span></span>;  <span class="comment">//获取服务接口</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Maps a path to an actual route with full metadata.</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> path used to match the &#123;<span class="doctag">@link</span> Route&#125;</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> matching &#123;<span class="doctag">@link</span> Route&#125; based on the provided path</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function">Route <span class="title">getMatchingRoute</span><span class="params">(String path)</span></span>;  <span class="comment">//获取匹配的服务接口</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看下他的实现类</p>
+<h4 id="2-3-5-SimpleRouteLocator"><a href="#2-3-5-SimpleRouteLocator" class="headerlink" title="2.3.5 SimpleRouteLocator"></a>2.3.5 SimpleRouteLocator</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">	public List&lt;Route&gt; getRoutes() &#123; //返回配置文件中的路径映射</span><br><span class="line">		List&lt;Route&gt; values = new ArrayList&lt;&gt;();</span><br><span class="line">		for (Entry&lt;String, ZuulRoute&gt; entry : getRoutesMap().entrySet()) &#123; //遍历配置文件中配置的每一个路径映射</span><br><span class="line">			ZuulRoute route = entry.getValue();</span><br><span class="line">			String path = route.getPath();</span><br><span class="line">			try &#123;</span><br><span class="line">				values.add(getRoute(route, path));</span><br><span class="line">			&#125;</span><br><span class="line">			catch (Exception e) &#123;</span><br><span class="line">				if (log.isWarnEnabled()) &#123;</span><br><span class="line">					log.warn(&quot;Invalid route, routeId: &quot; + route.getId()</span><br><span class="line">							+ &quot;, routeServiceId: &quot; + route.getServiceId() + &quot;, msg: &quot;</span><br><span class="line">							+ e.getMessage());</span><br><span class="line">				&#125;</span><br><span class="line">				if (log.isDebugEnabled()) &#123;</span><br><span class="line">					log.debug(&quot;&quot;, e);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		return values;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	protected Map&lt;String, ZuulRoute&gt; getRoutesMap() &#123;</span><br><span class="line">		if (this.routes.get() == null) &#123;</span><br><span class="line">			this.routes.set(locateRoutes());</span><br><span class="line">		&#125;</span><br><span class="line">		return this.routes.get();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">	从配置文件中拿到路径配置,然后put到 reutes中</span><br><span class="line">*/</span><br><span class="line">	protected Map&lt;String, ZuulRoute&gt; locateRoutes() &#123;</span><br><span class="line">		LinkedHashMap&lt;String, ZuulRoute&gt; routesMap = new LinkedHashMap&lt;&gt;();</span><br><span class="line">		for (ZuulRoute route : this.properties.getRoutes().values()) &#123;</span><br><span class="line">			routesMap.put(route.getPath(), route);</span><br><span class="line">		&#125;</span><br><span class="line">		return routesMap;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-3-6ZuulController"><a href="#2-3-6ZuulController" class="headerlink" title="2.3.6ZuulController"></a>2.3.6ZuulController</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public class ZuulController extends ServletWrappingController &#123;</span><br><span class="line"></span><br><span class="line">	public ZuulController() &#123;</span><br><span class="line">		setServletClass(ZuulServlet.class);</span><br><span class="line">		setServletName(&quot;zuul&quot;);</span><br><span class="line">		setSupportedMethods((String[]) null); // Allow all</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">  /**</span><br><span class="line"> 这段代码我不是很理解包括他的父类代码,不过他引入了ZuulServlet</span><br><span class="line">  */</span><br><span class="line">	@Override</span><br><span class="line">	public ModelAndView handleRequest(HttpServletRequest request, </span><br><span class="line">			HttpServletResponse response) throws Exception &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			// We don&apos;t care about the other features of the base class, just want to</span><br><span class="line">			// handle the request</span><br><span class="line">			return super.handleRequestInternal(request, response);</span><br><span class="line">		&#125;</span><br><span class="line">		finally &#123;</span><br><span class="line">			// @see com.netflix.zuul.context.ContextLifecycleFilter.doFilter</span><br><span class="line">			RequestContext.getCurrentContext().unset();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-3-7-ZuulServlet"><a href="#2-3-7-ZuulServlet" class="headerlink" title="2.3.7 ZuulServlet"></a>2.3.7 ZuulServlet</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">封装了一个zuulrunner</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">3374242278843351500L</span>;</span><br><span class="line">    <span class="keyword">private</span> ZuulRunner zuulRunner;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig config)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.init(config);</span><br><span class="line"></span><br><span class="line">    String bufferReqsStr = config.getInitParameter(<span class="string">"buffer-requests"</span>);</span><br><span class="line">    <span class="keyword">boolean</span> bufferReqs = bufferReqsStr != <span class="keyword">null</span> &amp;&amp; bufferReqsStr.equals(<span class="string">"true"</span>) ? <span class="keyword">true</span> : <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    zuulRunner = <span class="keyword">new</span> ZuulRunner(bufferReqs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>获取了一个buffer-requests 然后初始化zuulRunner ,zuulrunner 应该是zuul运行者,就是运行zuul 实现zuul的路由功能的人</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(javax.servlet.ServletRequest servletRequest, javax.servlet.ServletResponse servletResponse)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            init((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Marks this request as having passed through the "Zuul engine", as opposed to servlets</span></span><br><span class="line">            <span class="comment">// explicitly bound in web.xml, for which requests will not have the same data attached</span></span><br><span class="line">            RequestContext context = RequestContext.getCurrentContext();</span><br><span class="line">            context.setZuulEngineRan();  <span class="comment">//设置zuul 引擎参数为true</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                preRoute(); <span class="comment">//处理前</span></span><br><span class="line">            &#125; <span class="keyword">catch</span> (ZuulException e) &#123;</span><br><span class="line">                error(e);  <span class="comment">//发生错误处理</span></span><br><span class="line">                postRoute(); <span class="comment">//处理后</span></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                route(); <span class="comment">//处理</span></span><br><span class="line">            &#125; <span class="keyword">catch</span> (ZuulException e) &#123;</span><br><span class="line">                error(e);</span><br><span class="line">                postRoute();</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                postRoute();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ZuulException e) &#123;</span><br><span class="line">                error(e);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">            error(<span class="keyword">new</span> ZuulException(e, <span class="number">500</span>, <span class="string">"UNHANDLED_EXCEPTION_"</span> + e.getClass().getName()));</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            RequestContext.getCurrentContext().unset();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">preRoute</span><span class="params">()</span> <span class="keyword">throws</span> ZuulException </span>&#123; <span class="comment">//调用了zuulRunner 的方法</span></span><br><span class="line">        zuulRunner.preRoute();</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">postRoute</span><span class="params">()</span> <span class="keyword">throws</span> ZuulException </span>&#123;</span><br><span class="line">        zuulRunner.postRoute();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">route</span><span class="params">()</span> <span class="keyword">throws</span> ZuulException </span>&#123;</span><br><span class="line">        zuulRunner.route();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们看下zuulroute的源码</p>
+<h4 id="2-3-8ZuulRunner"><a href="#2-3-8ZuulRunner" class="headerlink" title="2.3.8ZuulRunner"></a>2.3.8ZuulRunner</h4><p>这货定义了几个方法,postRoute route  preRoute error</p>
+<p>执行定位前,执行定位,执行定位后,发生错误时</p>
+<p>这里应该是让我们继承这个类,然后重写他的方法</p>
+<p><todo> 未完待续</todo></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">springcloud springcloud zuul 微服务</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/19/zuul-怎么工作的？/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-高并发场景下缓存-数据库双写不一致问题分析与解决方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -291,7 +433,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 ZZQ
+    		&copy; 2019 ZZQ的
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -375,6 +517,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql redis 高并发 数据库 缓存 流量</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">springcloud springcloud zuul 微服务</a>
               </li>
             
             <div class="clearfix"></div>
