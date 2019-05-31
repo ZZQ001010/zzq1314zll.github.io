@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2019/5 | ZZQ的</title>
+  <title>log4j2生产环境配置 | ZZQ的</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与后端服务性能优化以及服务架构。非专业视觉设计师。此为博客一枚。">
+  <meta name="description" content="场景今天工作中遇到一个问题,甲方要求把我们已经上线的项目输出日志改为json格式,然后导入ELK中,实现日志的收集,可能以后会使用hadoop  strom 等等的对日志进行分析,这点我就不知道了 思考日志框架的配置我其实是并不了解的,平时都是使用springboot 默认的日志框架,logging,直接配置日志级别,日志输出地址就ok了,但是logging没有log4j2强大,因此自己花了将近三">
 <meta name="keywords" content="前端,js,jquery,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验,JAVA,java,C#,redis,rabbitmq,nginx,tomcat,jvm">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ZZQ的">
-<meta property="og:url" content="http://yoursite.com/archives/2019/05/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="log4j2生产环境配置">
+<meta property="og:url" content="http://yoursite.com/2019/05/31/log4j2生产环境配置/index.html">
 <meta property="og:site_name" content="ZZQ的">
-<meta property="og:description" content="华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与后端服务性能优化以及服务架构。非专业视觉设计师。此为博客一枚。">
+<meta property="og:description" content="场景今天工作中遇到一个问题,甲方要求把我们已经上线的项目输出日志改为json格式,然后导入ELK中,实现日志的收集,可能以后会使用hadoop  strom 等等的对日志进行分析,这点我就不知道了 思考日志框架的配置我其实是并不了解的,平时都是使用springboot 默认的日志框架,logging,直接配置日志级别,日志输出地址就ok了,但是logging没有log4j2强大,因此自己花了将近三">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-05-31T11:26:18.664Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ZZQ的">
-<meta name="twitter:description" content="华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与后端服务性能优化以及服务架构。非专业视觉设计师。此为博客一枚。">
+<meta name="twitter:title" content="log4j2生产环境配置">
+<meta name="twitter:description" content="场景今天工作中遇到一个问题,甲方要求把我们已经上线的项目输出日志改为json格式,然后导入ELK中,实现日志的收集,可能以后会使用hadoop  strom 等等的对日志进行分析,这点我就不知道了 思考日志框架的配置我其实是并不了解的,平时都是使用springboot 默认的日志框架,logging,直接配置日志级别,日志输出地址就ok了,但是logging没有log4j2强大,因此自己花了将近三">
   
     <link rel="alternative" href="/atom.xml" title="ZZQ的" type="application/atom+xml">
   
@@ -152,190 +153,169 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-log4j2生产环境配置" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      log4j2生产环境配置
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/31/log4j2生产环境配置/" class="archive-article-date">
+
+        
+        <a href="/2019/05/31/log4j2生产环境配置/" class="archive-article-date">
   	<time datetime="2019-05-31T11:12:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-31</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/31/log4j2生产环境配置/">log4j2生产环境配置</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>今天工作中遇到一个问题,甲方要求把我们已经上线的项目输出日志改为json格式,然后导入ELK中,实现日志的收集,可能以后会使用hadoop  strom 等等的对日志进行分析,这点我就不知道了</p>
+<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>日志框架的配置我其实是并不了解的,平时都是使用springboot 默认的日志框架,logging,直接配置日志级别,日志输出地址就ok了,但是logging没有log4j2强大,因此自己花了将近三十分钟去看了log4j2相关的配置,如果和日志输出格式改为json,并且保留原有的输出格式</p>
+<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><p>然后呢在网上找了一些log4j2的配置文件,下面粘贴一下代码解释下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Configuration</span> <span class="attr">status</span>=<span class="string">"WARN"</span> <span class="attr">monitorInterval</span>=<span class="string">"120"</span>&gt;</span>  <span class="comment">&lt;!--这里的120指的是,每过120秒,就会重新加载一遍配置文件,也就是说,修改配置文件不用重启服务--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Properties</span>&gt;</span> <span class="comment">&lt;!--日志文件存放地址--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Property</span> <span class="attr">name</span>=<span class="string">"LOG_HOME"</span>&gt;</span>logs<span class="tag">&lt;/<span class="name">Property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">Appenders</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 优先级从高到低分别是 OFF、FATAL、ERROR、WARN、INFO、DEBUG、ALL --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 单词解释： Match：匹配 DENY：拒绝 Mismatch：不匹配 ACCEPT：接受 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- DENY，日志将立即被抛弃不再经过其他过滤器； NEUTRAL，有序列表里的下个过滤器过接着处理日志； ACCEPT，日志会被立即处理，不再经过剩余过滤器。 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--输出日志的格式</span></span><br><span class="line"><span class="comment">         %d&#123;yyyy-MM-dd HH:mm:ss, SSS&#125; : 日志生产时间</span></span><br><span class="line"><span class="comment">         %p : 日志输出格式</span></span><br><span class="line"><span class="comment">         %c : logger的名称</span></span><br><span class="line"><span class="comment">         %m : 日志内容，即 logger.info("message")</span></span><br><span class="line"><span class="comment">         %n : 换行符</span></span><br><span class="line"><span class="comment">         %C : Java类名</span></span><br><span class="line"><span class="comment">         %L : 日志输出所在行数</span></span><br><span class="line"><span class="comment">         %M : 日志输出所在方法名</span></span><br><span class="line"><span class="comment">         hostName : 本地机器名</span></span><br><span class="line"><span class="comment">         hostAddress : 本地ip地址 --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!--这个输出控制台的配置，这里输出除了warn和error级别的信息到System.out --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Console</span> <span class="attr">name</span>=<span class="string">"console_out_appender"</span> <span class="attr">target</span>=<span class="string">"SYSTEM_OUT"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) . --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">ThresholdFilter</span> <span class="attr">level</span>=<span class="string">"DEBUG"</span> <span class="attr">onMatch</span>=<span class="string">"ACCEPT"</span></span></span><br><span class="line"><span class="tag">                             <span class="attr">onMismatch</span>=<span class="string">"DENY"</span> /&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 输出日志的格式 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">PatternLayout</span> <span class="attr">pattern</span>=<span class="string">"%5p [%t] %d&#123;yyyy-MM-dd HH:mm:ss&#125; (%F:%L) %m%n"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Console</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 这个输出控制台的配置，这里输出error级别的信息到System.err，在eclipse控制台上看到的是红色文字 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Console</span> <span class="attr">name</span>=<span class="string">"console_err_appender"</span> <span class="attr">target</span>=<span class="string">"SYSTEM_ERR"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">ThresholdFilter</span> <span class="attr">level</span>=<span class="string">"ERROR"</span> <span class="attr">onMatch</span>=<span class="string">"ACCEPT"</span></span></span><br><span class="line"><span class="tag">                             <span class="attr">onMismatch</span>=<span class="string">"DENY"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">PatternLayout</span> <span class="attr">pattern</span>=<span class="string">"%5p [%t] %d&#123;yyyy-MM-dd HH:mm:ss&#125; (%F:%L) %m%n"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Console</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- TRACE级别日志 ; 设置日志格式并配置日志压缩格式，压缩文件独立放在一个文件夹内， 日期格式不能为冒号，否则无法生成，因为文件名不允许有冒号，此appender只输出trace级别的数据到trace.log --&gt;</span></span><br><span class="line">      <span class="comment">&lt;!--  &lt;RollingFile name="trace_appender" immediateFlush="true"</span></span><br><span class="line"><span class="comment">                     fileName="$&#123;LOG_HOME&#125;/trace.log" filePattern="$&#123;LOG_HOME&#125;/trace/trace - %d&#123;yyyy-MM-dd HH_mm_ss&#125;.log.gz"&gt;</span></span><br><span class="line"><span class="comment">            &lt;PatternLayout&gt;</span></span><br><span class="line"><span class="comment">                &lt;pattern&gt;%5p [%t] %d&#123;yyyy-MM-dd HH:mm:ss&#125; (%F:%L) %m%n&lt;/pattern&gt;</span></span><br><span class="line"><span class="comment">            &lt;/PatternLayout&gt;</span></span><br><span class="line"><span class="comment">            &lt;Policies&gt;</span></span><br><span class="line"><span class="comment">                &amp;lt;!&amp;ndash; 每个日志文件最大2MB &amp;ndash;&amp;gt;</span></span><br><span class="line"><span class="comment">                &lt;SizeBasedTriggeringPolicy size="2MB" /&gt;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">            &lt;/Policies&gt;</span></span><br><span class="line"><span class="comment">            &lt;Filters&gt;</span></span><br><span class="line"><span class="comment">                &amp;lt;!&amp;ndash; 此Filter意思是，只输出TRACE级别的数据 DENY，日志将立即被抛弃不再经过其他过滤器； NEUTRAL，有序列表里的下个过滤器过接着处理日志；</span></span><br><span class="line"><span class="comment">                    ACCEPT，日志会被立即处理，不再经过剩余过滤器。 &amp;ndash;&amp;gt;</span></span><br><span class="line"><span class="comment">                &lt;ThresholdFilter level="debug" onMatch="DENY"</span></span><br><span class="line"><span class="comment">                                 onMismatch="NEUTRAL" /&gt;</span></span><br><span class="line"><span class="comment">                &lt;ThresholdFilter level="trace" onMatch="ACCEPT"</span></span><br><span class="line"><span class="comment">                                 onMismatch="DENY" /&gt;</span></span><br><span class="line"><span class="comment">            &lt;/Filters&gt;</span></span><br><span class="line"><span class="comment">        &lt;/RollingFile&gt;--&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- DEBUG级别日志 设置日志格式并配置日志压缩格式，压缩文件独立放在一个文件夹内， 日期格式不能为冒号，否则无法生成，因为文件名不允许有冒号，此appender只输出debug级别的数据到debug.log; --&gt;</span></span><br><span class="line">      <span class="comment">&lt;!--  &lt;RollingFile name="debug_appender" immediateFlush="true"</span></span><br><span class="line"><span class="comment">                     fileName="$&#123;LOG_HOME&#125;/debug.log" filePattern="$&#123;LOG_HOME&#125;/debug/debug - %d&#123;yyyy-MM-dd HH_mm_ss&#125;.log.gz"&gt;</span></span><br><span class="line"><span class="comment">            &lt;PatternLayout&gt;</span></span><br><span class="line"><span class="comment">                &lt;pattern&gt;%5p [%t] %d&#123;yyyy-MM-dd HH:mm:ss&#125; (%F:%L) %m%n&lt;/pattern&gt;</span></span><br><span class="line"><span class="comment">            &lt;/PatternLayout&gt;</span></span><br><span class="line"><span class="comment">            &lt;Policies&gt;&amp;lt;!&amp;ndash; 每个日志文件最大2MB ; &amp;ndash;&amp;gt;</span></span><br><span class="line"><span class="comment">                &lt;SizeBasedTriggeringPolicy size="2MB" /&gt;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">                &amp;lt;!&amp;ndash; 如果启用此配置，则日志会按文件名生成新压缩文件， 即如果filePattern配置的日期格式为 %d&#123;yyyy-MM-dd HH&#125;</span></span><br><span class="line"><span class="comment">                    ，则每小时生成一个压缩文件， 如果filePattern配置的日期格式为 %d&#123;yyyy-MM-dd&#125; ，则天生成一个压缩文件 &amp;ndash;&amp;gt;</span></span><br><span class="line"><span class="comment">                &lt;TimeBasedTriggeringPolicy interval="1"</span></span><br><span class="line"><span class="comment">                                           modulate="true" /&gt;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">            &lt;/Policies&gt;</span></span><br><span class="line"><span class="comment">            &lt;Filters&gt;&amp;lt;!&amp;ndash; 此Filter意思是，只输出debug级别的数据 &amp;ndash;&amp;gt;</span></span><br><span class="line"><span class="comment">                &lt;ThresholdFilter level="info" onMatch="DENY"</span></span><br><span class="line"><span class="comment">                                 onMismatch="NEUTRAL" /&gt;</span></span><br><span class="line"><span class="comment">                &lt;ThresholdFilter level="debug" onMatch="ACCEPT"</span></span><br><span class="line"><span class="comment">                                 onMismatch="DENY" /&gt;</span></span><br><span class="line"><span class="comment">            &lt;/Filters&gt;</span></span><br><span class="line"><span class="comment">        &lt;/RollingFile&gt;--&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- INFO级别日志 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">RollingFile</span> <span class="attr">name</span>=<span class="string">"info_appender"</span> <span class="attr">immediateFlush</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">                     <span class="attr">fileName</span>=<span class="string">"$&#123;LOG_HOME&#125;/info.log"</span> <span class="attr">filePattern</span>=<span class="string">"$&#123;LOG_HOME&#125;/info/info - %d&#123;yyyy-MM-dd HH_mm_ss&#125;.log.gz"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">PatternLayout</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%5p [%t] %d&#123;yyyy-MM-dd HH:mm:ss&#125; (%F:%L) %m%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">PatternLayout</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Policies</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">SizeBasedTriggeringPolicy</span> <span class="attr">size</span>=<span class="string">"2MB"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">Policies</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Filters</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">ThresholdFilter</span> <span class="attr">level</span>=<span class="string">"warn"</span> <span class="attr">onMatch</span>=<span class="string">"DENY"</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">onMismatch</span>=<span class="string">"NEUTRAL"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">ThresholdFilter</span> <span class="attr">level</span>=<span class="string">"info"</span> <span class="attr">onMatch</span>=<span class="string">"ACCEPT"</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">onMismatch</span>=<span class="string">"DENY"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">Filters</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">RollingFile</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">RollingFile</span> <span class="attr">name</span>=<span class="string">"info_appender"</span> <span class="attr">immediateFlush</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">                     <span class="attr">fileName</span>=<span class="string">"$&#123;LOG_HOME&#125;/info.json"</span> <span class="attr">filePattern</span>=<span class="string">"$&#123;LOG_HOME&#125;/info/info - %d&#123;yyyy-MM-dd HH_mm_ss&#125;.log.gz"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">JsonLayout</span>/&gt;</span>  <span class="comment">&lt;!-- 加上这个节点,之后就会按照json格式输出日志--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">PatternLayout</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%5p [%t] %d&#123;yyyy-MM-dd HH:mm:ss&#125; (%F:%L) %m%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">PatternLayout</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Policies</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">SizeBasedTriggeringPolicy</span> <span class="attr">size</span>=<span class="string">"2MB"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">Policies</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Filters</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">ThresholdFilter</span> <span class="attr">level</span>=<span class="string">"warn"</span> <span class="attr">onMatch</span>=<span class="string">"DENY"</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">onMismatch</span>=<span class="string">"NEUTRAL"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">ThresholdFilter</span> <span class="attr">level</span>=<span class="string">"info"</span> <span class="attr">onMatch</span>=<span class="string">"ACCEPT"</span></span></span><br><span class="line"><span class="tag">                                 <span class="attr">onMismatch</span>=<span class="string">"DENY"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">Filters</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">RollingFile</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- WARN级别日志 --&gt;</span></span><br><span class="line">       <span class="comment">&lt;!-- &lt;RollingFile name="warn_appender" immediateFlush="true"</span></span><br><span class="line"><span class="comment">                     fileName="$&#123;LOG_HOME&#125;/warn.log" filePattern="$&#123;LOG_HOME&#125;/warn/warn - %d&#123;yyyy-MM-dd HH_mm_ss&#125;.log.gz"&gt;</span></span><br><span class="line"><span class="comment">            &lt;PatternLayout&gt;</span></span><br><span class="line"><span class="comment">                &lt;pattern&gt;%5p [%t] %d&#123;yyyy-MM-dd HH:mm:ss&#125; (%F:%L) %m%n&lt;/pattern&gt;</span></span><br><span class="line"><span class="comment">            &lt;/PatternLayout&gt;</span></span><br><span class="line"><span class="comment">            &lt;Policies&gt;</span></span><br><span class="line"><span class="comment">                &lt;SizeBasedTriggeringPolicy size="2MB" /&gt;</span></span><br><span class="line"><span class="comment">            &lt;/Policies&gt;</span></span><br><span class="line"><span class="comment">            &lt;Filters&gt;</span></span><br><span class="line"><span class="comment">                &lt;ThresholdFilter level="error" onMatch="DENY"</span></span><br><span class="line"><span class="comment">                                 onMismatch="NEUTRAL" /&gt;</span></span><br><span class="line"><span class="comment">                &lt;ThresholdFilter level="warn" onMatch="ACCEPT"</span></span><br><span class="line"><span class="comment">                                 onMismatch="DENY" /&gt;</span></span><br><span class="line"><span class="comment">            &lt;/Filters&gt;</span></span><br><span class="line"><span class="comment">        &lt;/RollingFile&gt;--&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- ERROR级别日志 --&gt;</span></span><br><span class="line">     <span class="comment">&lt;!--   &lt;RollingFile name="error_appender" immediateFlush="true"</span></span><br><span class="line"><span class="comment">                     fileName="$&#123;LOG_HOME&#125;/error.log" filePattern="$&#123;LOG_HOME&#125;/error/error - %d&#123;yyyy-MM-dd HH_mm_ss&#125;.log.gz"&gt;</span></span><br><span class="line"><span class="comment">            &lt;PatternLayout&gt;</span></span><br><span class="line"><span class="comment">                &lt;pattern&gt;%5p [%t] %d&#123;yyyy-MM-dd HH:mm:ss&#125; (%F:%L) %m%n&lt;/pattern&gt;</span></span><br><span class="line"><span class="comment">            &lt;/PatternLayout&gt;</span></span><br><span class="line"><span class="comment">            &lt;Policies&gt;</span></span><br><span class="line"><span class="comment">                &lt;SizeBasedTriggeringPolicy size="2MB" /&gt;</span></span><br><span class="line"><span class="comment">            &lt;/Policies&gt;</span></span><br><span class="line"><span class="comment">            &lt;Filters&gt;</span></span><br><span class="line"><span class="comment">                &lt;ThresholdFilter level="error" onMatch="ACCEPT"</span></span><br><span class="line"><span class="comment">                                 onMismatch="DENY" /&gt;</span></span><br><span class="line"><span class="comment">            &lt;/Filters&gt;</span></span><br><span class="line"><span class="comment">        &lt;/RollingFile&gt;--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Appenders</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">Loggers</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 配置日志的根节点 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 定义logger，只有定义了logger并引入了appender，appender才会生效 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"trace"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"console_out_appender"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"console_err_appender"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"trace_appender"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"debug_appender"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"info_appender"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"warn_appender"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"error_appender"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 第三方日志系统 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;logger name="org.springframework.core" level="info" /&gt;--&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;logger name="org.springframework.beans" level="info" /&gt;--&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;logger name="org.springframework.context" level="info" /&gt;--&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;logger name="org.springframework.web" level="info" /&gt;--&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;logger name="org.jboss.netty" level="warn" /&gt;--&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;logger name="org.apache.http" level="warn" /&gt;--&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Loggers</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">Configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>~~~///(^v^)\\\~~~<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/Alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wechat.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/05/31/log4j2生产环境配置/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/20/redis与LRU算法/" class="archive-article-date">
-  	<time datetime="2019-05-20T04:27:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-20</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/05/20/redis与LRU算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">redis与LRU算法</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/20/redis与LRU算法/">redis与LRU算法</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">LRU,redis,缓存,算法，淘汰算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/19/zuul-怎么工作的？/" class="archive-article-date">
-  	<time datetime="2019-05-19T15:37:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/19/zuul-怎么工作的？/">zuul 怎么工作的？</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">springcloud springcloud zuul 微服务</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/" class="archive-article-date">
-  	<time datetime="2019-05-19T12:17:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/">基于“分发层”+“应用层”双层nginx架构提高命中率方案</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/19/高并发场景下缓存-数据库双写不一致问题分析与解决方案/" class="archive-article-date">
-  	<time datetime="2019-05-19T12:17:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/19/高并发场景下缓存-数据库双写不一致问题分析与解决方案/">高并发场景下缓存+数据库双写不一致问题分析与解决方案</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql redis 高并发 数据库 缓存 流量</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -358,8 +338,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
