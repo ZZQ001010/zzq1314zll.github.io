@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2019 | ZZQ的</title>
+  <title>tomcat_redis_session 阅读后感 | ZZQ的</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与后端服务性能优化以及服务架构。非专业视觉设计师。此为博客一枚。">
-<meta name="keywords" content="前端,js,jquery,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验,JAVA,java,C#,redis,rabbitmq,nginx,tomcat,jvm">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ZZQ的">
-<meta property="og:url" content="http://yoursite.com/archives/2019/index.html">
+  <meta name="description" content="问题场景最近呢，因为项目在开始的时候，项目考评没有将认证，鉴权单独出来，因此如果多台机器部署多实例，就出现了session共享 分析这种情况呢，就是因为分布式嘛，导致每台机器都使用自己的内存保存session，导致，如果在多台服务前使用LB ，重复的认证鉴权过程 问题解决 首先呢，项目已经做完了，项目大体肯定是不能动的，所以在项目上无法东手脚 查阅github，有一个项目 redis-sessio">
+<meta name="keywords" content="tomcat,session,redis,分布式session">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tomcat_redis_session 阅读后感">
+<meta property="og:url" content="http://yoursite.com/2019/06/03/tomcat-redis-session-阅读后感/index.html">
 <meta property="og:site_name" content="ZZQ的">
-<meta property="og:description" content="华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与后端服务性能优化以及服务架构。非专业视觉设计师。此为博客一枚。">
+<meta property="og:description" content="问题场景最近呢，因为项目在开始的时候，项目考评没有将认证，鉴权单独出来，因此如果多台机器部署多实例，就出现了session共享 分析这种情况呢，就是因为分布式嘛，导致每台机器都使用自己的内存保存session，导致，如果在多台服务前使用LB ，重复的认证鉴权过程 问题解决 首先呢，项目已经做完了，项目大体肯定是不能动的，所以在项目上无法东手脚 查阅github，有一个项目 redis-sessio">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-03T05:55:24.159Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ZZQ的">
-<meta name="twitter:description" content="华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与后端服务性能优化以及服务架构。非专业视觉设计师。此为博客一枚。">
+<meta name="twitter:title" content="tomcat_redis_session 阅读后感">
+<meta name="twitter:description" content="问题场景最近呢，因为项目在开始的时候，项目考评没有将认证，鉴权单独出来，因此如果多台机器部署多实例，就出现了session共享 分析这种情况呢，就是因为分布式嘛，导致每台机器都使用自己的内存保存session，导致，如果在多台服务前使用LB ，重复的认证鉴权过程 问题解决 首先呢，项目已经做完了，项目大体肯定是不能动的，所以在项目上无法东手脚 查阅github，有一个项目 redis-sessio">
   
     <link rel="alternative" href="/atom.xml" title="ZZQ的" type="application/atom+xml">
   
@@ -152,36 +153,84 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-tomcat-redis-session-阅读后感" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/06/03/tomcat-redis-session-阅读后感/" class="archive-article-date">
-  	<time datetime="2019-06-03T05:54:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-03</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/03/tomcat-redis-session-阅读后感/">tomcat_redis_session 阅读后感</a>
+    <h1 class="article-title" itemprop="name">
+      tomcat_redis_session 阅读后感
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/06/03/tomcat-redis-session-阅读后感/" class="archive-article-date">
+  	<time datetime="2019-06-03T05:54:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h3><p>最近呢，因为项目在开始的时候，项目考评没有将认证，鉴权单独出来，因此如果多台机器部署多实例，就出现了session共享</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>这种情况呢，就是因为分布式嘛，导致每台机器都使用自己的内存保存session，导致，如果在多台服务前使用LB ，重复的认证鉴权过程</p>
+<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><ul>
+<li>首先呢，项目已经做完了，项目大体肯定是不能动的，所以在项目上无法东手脚</li>
+<li>查阅github，有一个项目 redis-session-tomcat ，就是使用redis 解决session共享的一种方案，具体怎么使用，这里不细说，项目介绍中有<h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><h4 id="假想"><a href="#假想" class="headerlink" title="假想"></a>假想</h4></li>
+<li>这样不就使用redis 存储session代替内存存储session吗？<h4 id="自己实现"><a href="#自己实现" class="headerlink" title="自己实现"></a>自己实现</h4></li>
+<li>想自己动手实现，发现自己对tomacat 容器并不是很了解，因此，下载源代码看看<h3 id="代码解析"><a href="#代码解析" class="headerlink" title="代码解析"></a>代码解析</h3></li>
+<li>可以看到项目中一共就五个类<ul>
+<li>JavaSerializer implements Serializer 实现序列化接口，把session以字节的方式序列化<ul>
+<li>serializeFrom  序列化</li>
+<li>deserializeInto  反序列化</li>
+</ul>
+</li>
+<li>RedisSession extends StandardSession 覆盖了标准session setAttribute()  removeAttribute() setId() ,并且自己内部维护了一个map，对map提getChangedAttribute()方法</li>
+<li>RedisSessionHandlerValve extends ValveBase 继承了tomcat 标准Valve，Valve 是什么？（建议自己读一读，tomcat架构设计，他其实就是相当于一个过滤器一样），从写invoke（）方法，在这里面实现了session 的初始化，以及过期处理</li>
+<li>RedisSessionManager extends ManagerBase implements Lifecycle 这个就是 如何让tomcat把session放入redis 的关键， 用来管理session的，重写了add（）,findSession(),方法<h3 id="通过上述分析，得出结论"><a href="#通过上述分析，得出结论" class="headerlink" title="通过上述分析，得出结论"></a>通过上述分析，得出结论</h3>其实如果想实现，对tomcat session 的代理，就需要重写ManagerBase这个，重写对session的管理</li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>~~~///(^v^)\\\~~~<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/Alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/wechat.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -193,187 +242,106 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/06/03/tomcat-redis-session-阅读后感/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/31/log4j2生产环境配置/" class="archive-article-date">
-  	<time datetime="2019-05-31T11:12:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-31</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/05/31/log4j2生产环境配置/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">log4j2生产环境配置</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/31/log4j2生产环境配置/">log4j2生产环境配置</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/20/redis与LRU算法/" class="archive-article-date">
-  	<time datetime="2019-05-20T04:27:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/20/redis与LRU算法/">redis与LRU算法</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">LRU,redis,缓存,算法，淘汰算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/19/zuul-怎么工作的？/" class="archive-article-date">
-  	<time datetime="2019-05-19T15:37:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/19/zuul-怎么工作的？/">zuul 怎么工作的？</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">springcloud springcloud zuul 微服务</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/" class="archive-article-date">
-  	<time datetime="2019-05-19T12:17:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/">基于“分发层”+“应用层”双层nginx架构提高命中率方案</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/05/19/高并发场景下缓存-数据库双写不一致问题分析与解决方案/" class="archive-article-date">
-  	<time datetime="2019-05-19T12:17:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/19/高并发场景下缓存-数据库双写不一致问题分析与解决方案/">高并发场景下缓存+数据库双写不一致问题分析与解决方案</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql redis 高并发 数据库 缓存 流量</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -396,8 +364,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

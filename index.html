@@ -154,6 +154,98 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-tomcat-redis-session-阅读后感" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/03/tomcat-redis-session-阅读后感/">tomcat_redis_session 阅读后感</a>
+    </h1>
+  
+
+        
+        <a href="/2019/06/03/tomcat-redis-session-阅读后感/" class="archive-article-date">
+  	<time datetime="2019-06-03T05:54:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h3><p>最近呢，因为项目在开始的时候，项目考评没有将认证，鉴权单独出来，因此如果多台机器部署多实例，就出现了session共享</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>这种情况呢，就是因为分布式嘛，导致每台机器都使用自己的内存保存session，导致，如果在多台服务前使用LB ，重复的认证鉴权过程</p>
+<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><ul>
+<li>首先呢，项目已经做完了，项目大体肯定是不能动的，所以在项目上无法东手脚</li>
+<li>查阅github，有一个项目 redis-session-tomcat ，就是使用redis 解决session共享的一种方案，具体怎么使用，这里不细说，项目介绍中有<h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><h4 id="假想"><a href="#假想" class="headerlink" title="假想"></a>假想</h4></li>
+<li>这样不就使用redis 存储session代替内存存储session吗？<h4 id="自己实现"><a href="#自己实现" class="headerlink" title="自己实现"></a>自己实现</h4></li>
+<li>想自己动手实现，发现自己对tomacat 容器并不是很了解，因此，下载源代码看看<h3 id="代码解析"><a href="#代码解析" class="headerlink" title="代码解析"></a>代码解析</h3></li>
+<li>可以看到项目中一共就五个类<ul>
+<li>JavaSerializer implements Serializer 实现序列化接口，把session以字节的方式序列化<ul>
+<li>serializeFrom  序列化</li>
+<li>deserializeInto  反序列化</li>
+</ul>
+</li>
+<li>RedisSession extends StandardSession 覆盖了标准session setAttribute()  removeAttribute() setId() ,并且自己内部维护了一个map，对map提getChangedAttribute()方法</li>
+<li>RedisSessionHandlerValve extends ValveBase 继承了tomcat 标准Valve，Valve 是什么？（建议自己读一读，tomcat架构设计，他其实就是相当于一个过滤器一样），从写invoke（）方法，在这里面实现了session 的初始化，以及过期处理</li>
+<li>RedisSessionManager extends ManagerBase implements Lifecycle 这个就是 如何让tomcat把session放入redis 的关键， 用来管理session的，重写了add（）,findSession(),方法<h3 id="通过上述分析，得出结论"><a href="#通过上述分析，得出结论" class="headerlink" title="通过上述分析，得出结论"></a>通过上述分析，得出结论</h3>其实如果想实现，对tomcat session 的代理，就需要重写ManagerBase这个，重写对session的管理</li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">tomcat,session,redis,分布式session</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/06/03/tomcat-redis-session-阅读后感/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-log4j2生产环境配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -771,11 +863,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql redis 高并发 数据库 缓存 流量</a>
+                <a href="javascript:void(0)" class="js-tag color2">tomcat,session,redis,分布式session</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">springcloud springcloud zuul 微服务</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql redis 高并发 数据库 缓存 流量</a>
               </li>
             
             <div class="clearfix"></div>
