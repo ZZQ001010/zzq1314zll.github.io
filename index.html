@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
@@ -154,44 +154,39 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-tomcat-redis-session-阅读后感" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-hexo使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/03/tomcat-redis-session-阅读后感/">tomcat_redis_session 阅读后感</a>
+      <a class="article-title" href="/2019/11/14/hexo使用/">hexo使用</a>
     </h1>
   
 
         
-        <a href="/2019/06/03/tomcat-redis-session-阅读后感/" class="archive-article-date">
-  	<time datetime="2019-06-03T05:54:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-03</time>
+        <a href="/2019/11/14/hexo使用/" class="archive-article-date">
+  	<time datetime="2019-11-14T04:23:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-14</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h3><p>最近呢，因为项目在开始的时候，项目考评没有将认证，鉴权单独出来，因此如果多台机器部署多实例，就出现了session共享</p>
-<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>这种情况呢，就是因为分布式嘛，导致每台机器都使用自己的内存保存session，导致，如果在多台服务前使用LB ，重复的认证鉴权过程</p>
-<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><ul>
-<li>首先呢，项目已经做完了，项目大体肯定是不能动的，所以在项目上无法东手脚</li>
-<li>查阅github，有一个项目 redis-session-tomcat ，就是使用redis 解决session共享的一种方案，具体怎么使用，这里不细说，项目介绍中有<h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><h4 id="假想"><a href="#假想" class="headerlink" title="假想"></a>假想</h4></li>
-<li>这样不就使用redis 存储session代替内存存储session吗？<h4 id="自己实现"><a href="#自己实现" class="headerlink" title="自己实现"></a>自己实现</h4></li>
-<li>想自己动手实现，发现自己对tomacat 容器并不是很了解，因此，下载源代码看看<h3 id="代码解析"><a href="#代码解析" class="headerlink" title="代码解析"></a>代码解析</h3></li>
-<li>可以看到项目中一共就五个类<ul>
-<li>JavaSerializer implements Serializer 实现序列化接口，把session以字节的方式序列化<ul>
-<li>serializeFrom  序列化</li>
-<li>deserializeInto  反序列化</li>
-</ul>
-</li>
-<li>RedisSession extends StandardSession 覆盖了标准session setAttribute()  removeAttribute() setId() ,并且自己内部维护了一个map，对map提getChangedAttribute()方法</li>
-<li>RedisSessionHandlerValve extends ValveBase 继承了tomcat 标准Valve，Valve 是什么？（建议自己读一读，tomcat架构设计，他其实就是相当于一个过滤器一样），从写invoke（）方法，在这里面实现了session 的初始化，以及过期处理</li>
-<li>RedisSessionManager extends ManagerBase implements Lifecycle 这个就是 如何让tomcat把session放入redis 的关键， 用来管理session的，重写了add（）,findSession(),方法<h3 id="通过上述分析，得出结论"><a href="#通过上述分析，得出结论" class="headerlink" title="通过上述分析，得出结论"></a>通过上述分析，得出结论</h3>其实如果想实现，对tomcat session 的代理，就需要重写ManagerBase这个，重写对session的管理</li>
-</ul>
-</li>
+        <h1 id="安装nodejs、git-bash、-hexo"><a href="#安装nodejs、git-bash、-hexo" class="headerlink" title="安装nodejs、git bash、 hexo"></a>安装nodejs、git bash、 hexo</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">yum install node</span><br><span class="line"></span><br><span class="line">yum install git</span><br><span class="line"></span><br><span class="line">sudo npm install hexo-server</span><br><span class="line"></span><br><span class="line">sudo npm install hexo-client</span><br><span class="line"></span><br><span class="line">hexo -v</span><br></pre></td></tr></table></figure>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ul>
+<li>hexo -s </li>
+<li>hexo -g</li>
+<li>hexo -d</li>
+<li>hexo init [floder]</li>
+<li>hexo n<br>更多参考 <code>https://hexo.io/zh-cn/docs/commands</code><h1 id="关联github"><a href="#关联github" class="headerlink" title="关联github"></a>关联github</h1><h2 id="配置ssh"><a href="#配置ssh" class="headerlink" title="配置ssh"></a>配置ssh</h2></li>
+<li>为了避免每次提交代码输入密码，配置公私秘钥对即可</li>
+<li>在github 个人信息下拉款中选择<code>setting</code></li>
+<li>选择 <code>SSH and GPG keys</code></li>
+<li>click <code>New SSH keys</code></li>
+<li>生成公私钥 ssh-keygen -t rsa -C “[email]”</li>
+<li>copy id_rsa.pub 文件中的内容，粘贴</li>
 </ul>
 
       
@@ -206,7 +201,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">tomcat,session,redis,分布式session</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">blog</a>
         		</li>
       		
 		</ul>
@@ -216,7 +211,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/03/tomcat-redis-session-阅读后感/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/11/14/hexo使用/">展开全文 >></a>
         </p>
       
 
@@ -559,86 +554,6 @@
 
 
   
-    <article id="post-基于“分发层”+“应用层”双层nginx架构提高命中率方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/">基于“分发层”+“应用层”双层nginx架构提高命中率方案</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/" class="archive-article-date">
-  	<time datetime="2019-05-19T12:17:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="问题发现"><a href="#问题发现" class="headerlink" title="问题发现"></a>问题发现</h2><p>在使用nginx 做缓存的时候就会发现,如果所有通过nginx 的请求返回结果都给缓存,这样数据量大的情况下,无法精准的对数据进行缓存,导致很多的数据缓存之后,又经过lru算法清除基于这个问题的出现,下面分析解决方案</p>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>上述问题的主要原因就是,所有的数据都缓存在一台机器上,因此,一台机器接收所有的请求,然后进行缓存,lru算法清除,如果我们把数据分类,比如说,把商品的请求,都给放在A 机器上,店铺的请求放在B机器上,这样的话,请求都被分类,分为两小分,然后在前面做一个转发,通过判断类型把请求转发到对应的机器上,这样一台机器接收的请求少了,缓存的数据也就不容易过期,缓存的命中率也就高了</p>
-<ul>
-<li>实际情况我们是不会进行对请求分类的,因为这样的话实在是太麻烦了,因此我们根据某些特性,比如如果是电商的话,就根据商品id ,店铺id,订单id等,然后进行hash 取模运算(这个和redis 差不多)</li>
-</ul>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><ul>
-<li><p>在nginx 是可以支持lua脚本的,我们使用lua脚本,然后从注册中心,或者自己配置一个数组,获取所有的要转发的实例</p>
-</li>
-<li><p>然后根据id hash取模运算,对应到数组中的指定的一个槽(服务器)</p>
-</li>
-<li><p>然后对这个服务器进行请求,服务器会请求后台服务,然后缓存数据,这样缓存的数据就比较单一,<strong>这也叫数据的维度话</strong></p>
-</li>
-</ul>
-<h3 id="什么是lua"><a href="#什么是lua" class="headerlink" title="什么是lua"></a>什么是lua</h3><ul>
-<li>当你有这个疑问,你不是一个合格的程序员自己去官网看看</li>
-</ul>
-<p><a href="http://www.lua.org/" target="_blank" rel="noopener">http://www.lua.org/</a></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>代码就不写了,想法都有了,代码不是so easy</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-高并发场景下缓存-数据库双写不一致问题分析与解决方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -766,6 +681,86 @@
 
 
   
+    <article id="post-基于“分发层”+“应用层”双层nginx架构提高命中率方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/">基于“分发层”+“应用层”双层nginx架构提高命中率方案</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/" class="archive-article-date">
+  	<time datetime="2019-05-19T12:17:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题发现"><a href="#问题发现" class="headerlink" title="问题发现"></a>问题发现</h2><p>在使用nginx 做缓存的时候就会发现,如果所有通过nginx 的请求返回结果都给缓存,这样数据量大的情况下,无法精准的对数据进行缓存,导致很多的数据缓存之后,又经过lru算法清除基于这个问题的出现,下面分析解决方案</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>上述问题的主要原因就是,所有的数据都缓存在一台机器上,因此,一台机器接收所有的请求,然后进行缓存,lru算法清除,如果我们把数据分类,比如说,把商品的请求,都给放在A 机器上,店铺的请求放在B机器上,这样的话,请求都被分类,分为两小分,然后在前面做一个转发,通过判断类型把请求转发到对应的机器上,这样一台机器接收的请求少了,缓存的数据也就不容易过期,缓存的命中率也就高了</p>
+<ul>
+<li>实际情况我们是不会进行对请求分类的,因为这样的话实在是太麻烦了,因此我们根据某些特性,比如如果是电商的话,就根据商品id ,店铺id,订单id等,然后进行hash 取模运算(这个和redis 差不多)</li>
+</ul>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><ul>
+<li><p>在nginx 是可以支持lua脚本的,我们使用lua脚本,然后从注册中心,或者自己配置一个数组,获取所有的要转发的实例</p>
+</li>
+<li><p>然后根据id hash取模运算,对应到数组中的指定的一个槽(服务器)</p>
+</li>
+<li><p>然后对这个服务器进行请求,服务器会请求后台服务,然后缓存数据,这样缓存的数据就比较单一,<strong>这也叫数据的维度话</strong></p>
+</li>
+</ul>
+<h3 id="什么是lua"><a href="#什么是lua" class="headerlink" title="什么是lua"></a>什么是lua</h3><ul>
+<li>当你有这个疑问,你不是一个合格的程序员自己去官网看看</li>
+</ul>
+<p><a href="http://www.lua.org/" target="_blank" rel="noopener">http://www.lua.org/</a></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>代码就不写了,想法都有了,代码不是so easy</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
   
 
 
@@ -859,19 +854,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">blog</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">LRU,redis,缓存,算法，淘汰算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat,session,redis,分布式session</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql redis 高并发 数据库 缓存 流量</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">springcloud springcloud zuul 微服务</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql redis 高并发 数据库 缓存 流量</a>
               </li>
             
             <div class="clearfix"></div>
@@ -879,7 +874,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
         </div>
         <ul class="search-ul">
           <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
-            缺失模块。<br>1、请确保node版本大于6.2<br>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
+            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
             3、在根目录_config.yml里添加配置：
 <pre style="font-size: 12px;" q-show="jsonFail">
   jsonContent:

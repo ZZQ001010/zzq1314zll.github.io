@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="ZZQ的">
 <meta property="og:description" content="1.场景对于QPS比较高的网站系统,几乎都会使用n级缓存增加网站的吞吐量,常用的缓存技术有很多,memcached,guava cache,redis  对于guava cache 这种本地缓存 ,生命周期随着jvm的销毁而结束,因此不具有高可用,并且每个jvm实例个自保存一份缓存,因此不具有诗句一致性 Memcached是多线程，非阻塞IO复用的网络模型；Redis使用单线程的多路 IO 复用模">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-19T14:27:46.172Z">
+<meta property="og:updated_time" content="2019-05-19T14:27:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高并发场景下缓存+数据库双写不一致问题分析与解决方案">
 <meta name="twitter:description" content="1.场景对于QPS比较高的网站系统,几乎都会使用n级缓存增加网站的吞吐量,常用的缓存技术有很多,memcached,guava cache,redis  对于guava cache 这种本地缓存 ,生命周期随着jvm的销毁而结束,因此不具有高可用,并且每个jvm实例个自保存一份缓存,因此不具有诗句一致性 Memcached是多线程，非阻塞IO复用的网络模型；Redis使用单线程的多路 IO 复用模">
@@ -341,15 +341,20 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/05/19/zuul-怎么工作的？/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          基于“分发层”+“应用层”双层nginx架构提高命中率方案
+          zuul 怎么工作的？
         
       </div>
     </a>
   
+  
+    <a href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">基于“分发层”+“应用层”双层nginx架构提高命中率方案</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
@@ -473,19 +478,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">blog</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">LRU,redis,缓存,算法，淘汰算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat,session,redis,分布式session</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql redis 高并发 数据库 缓存 流量</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">springcloud springcloud zuul 微服务</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql redis 高并发 数据库 缓存 流量</a>
               </li>
             
             <div class="clearfix"></div>
@@ -493,7 +498,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
         </div>
         <ul class="search-ul">
           <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
-            缺失模块。<br>1、请确保node版本大于6.2<br>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
+            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
             3、在根目录_config.yml里添加配置：
 <pre style="font-size: 12px;" q-show="jsonFail">
   jsonContent:

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="ZZQ的">
 <meta property="og:description" content="问题发现在使用nginx 做缓存的时候就会发现,如果所有通过nginx 的请求返回结果都给缓存,这样数据量大的情况下,无法精准的对数据进行缓存,导致很多的数据缓存之后,又经过lru算法清除基于这个问题的出现,下面分析解决方案 问题分析上述问题的主要原因就是,所有的数据都缓存在一台机器上,因此,一台机器接收所有的请求,然后进行缓存,lru算法清除,如果我们把数据分类,比如说,把商品的请求,都给放在A">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-27T08:12:55.226Z">
+<meta property="og:updated_time" content="2019-05-27T08:12:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于“分发层”+“应用层”双层nginx架构提高命中率方案">
 <meta name="twitter:description" content="问题发现在使用nginx 做缓存的时候就会发现,如果所有通过nginx 的请求返回结果都给缓存,这样数据量大的情况下,无法精准的对数据进行缓存,导致很多的数据缓存之后,又经过lru算法清除基于这个问题的出现,下面分析解决方案 问题分析上述问题的主要原因就是,所有的数据都缓存在一台机器上,因此,一台机器接收所有的请求,然后进行缓存,lru算法清除,如果我们把数据分类,比如说,把商品的请求,都给放在A">
@@ -294,20 +294,15 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/05/19/zuul-怎么工作的？/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/05/19/高并发场景下缓存-数据库双写不一致问题分析与解决方案/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          zuul 怎么工作的？
+          高并发场景下缓存+数据库双写不一致问题分析与解决方案
         
       </div>
     </a>
   
-  
-    <a href="/2019/05/19/高并发场景下缓存-数据库双写不一致问题分析与解决方案/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">高并发场景下缓存+数据库双写不一致问题分析与解决方案</div>
-      <i class="icon-circle-right"></i>
-    </a>
   
 </nav>
 
@@ -431,19 +426,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">blog</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">LRU,redis,缓存,算法，淘汰算法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat,session,redis,分布式session</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql redis 高并发 数据库 缓存 流量</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">springcloud springcloud zuul 微服务</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql redis 高并发 数据库 缓存 流量</a>
               </li>
             
             <div class="clearfix"></div>
@@ -451,7 +446,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
         </div>
         <ul class="search-ul">
           <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
-            缺失模块。<br>1、请确保node版本大于6.2<br>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br> npm i hexo-generator-json-content --save<br><br>
+            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
             3、在根目录_config.yml里添加配置：
 <pre style="font-size: 12px;" q-show="jsonFail">
   jsonContent:
