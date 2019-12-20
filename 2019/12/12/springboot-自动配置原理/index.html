@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>zookeeper单节点安装配置 | ZZQ的</title>
+  <title>springboot 自动配置原理 | ZZQ的</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.安装jdk1.1 下载jdkoracle 官网下载jdk1.8 1.2 上传到虚拟机上1scp jdk-8u131-linux-x64.tar.gz root@192.168.66.67:~/ 1.3 解压配置环境变量123456789101112131415161718 tar -xzvf jdk-8u131-linux-x64.tar.gz -C /usr/local/ ls cd /us">
-<meta name="keywords" content="前端,js,jquery,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验,JAVA,java,C#,redis,rabbitmq,nginx,tomcat,jvm">
+  <meta name="description" content="今天早上坐地铁看到了一篇管理springboot 自动装配的博客，自己也写过，只不过在csdn上，不在重复写了，直接引用地址 https://blog.csdn.net/qq_39148187/article/details/82154566 https://mp.weixin.qq.com/s/ZxY_AiJ1m3z1kH6juh2XHw">
+<meta name="keywords" content="springboot 自动装配 spring">
 <meta property="og:type" content="article">
-<meta property="og:title" content="zookeeper单节点安装配置">
-<meta property="og:url" content="http://yoursite.com/2019/11/28/zookeeper单节点安装配置/index.html">
+<meta property="og:title" content="springboot 自动配置原理">
+<meta property="og:url" content="http://yoursite.com/2019/12/12/springboot-自动配置原理/index.html">
 <meta property="og:site_name" content="ZZQ的">
-<meta property="og:description" content="1.安装jdk1.1 下载jdkoracle 官网下载jdk1.8 1.2 上传到虚拟机上1scp jdk-8u131-linux-x64.tar.gz root@192.168.66.67:~/ 1.3 解压配置环境变量123456789101112131415161718 tar -xzvf jdk-8u131-linux-x64.tar.gz -C /usr/local/ ls cd /us">
+<meta property="og:description" content="今天早上坐地铁看到了一篇管理springboot 自动装配的博客，自己也写过，只不过在csdn上，不在重复写了，直接引用地址 https://blog.csdn.net/qq_39148187/article/details/82154566 https://mp.weixin.qq.com/s/ZxY_AiJ1m3z1kH6juh2XHw">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-11-28T08:05:20.000Z">
+<meta property="og:updated_time" content="2019-12-12T02:18:22.366Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zookeeper单节点安装配置">
-<meta name="twitter:description" content="1.安装jdk1.1 下载jdkoracle 官网下载jdk1.8 1.2 上传到虚拟机上1scp jdk-8u131-linux-x64.tar.gz root@192.168.66.67:~/ 1.3 解压配置环境变量123456789101112131415161718 tar -xzvf jdk-8u131-linux-x64.tar.gz -C /usr/local/ ls cd /us">
+<meta name="twitter:title" content="springboot 自动配置原理">
+<meta name="twitter:description" content="今天早上坐地铁看到了一篇管理springboot 自动装配的博客，自己也写过，只不过在csdn上，不在重复写了，直接引用地址 https://blog.csdn.net/qq_39148187/article/details/82154566 https://mp.weixin.qq.com/s/ZxY_AiJ1m3z1kH6juh2XHw">
   
     <link rel="alternative" href="/atom.xml" title="ZZQ的" type="application/atom+xml">
   
@@ -153,76 +153,29 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-zookeeper单节点安装配置" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-springboot-自动配置原理" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      zookeeper单节点安装配置
+      springboot 自动配置原理
     </h1>
   
 
         
-        <a href="/2019/11/28/zookeeper单节点安装配置/" class="archive-article-date">
-  	<time datetime="2019-11-28T06:57:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-28</time>
+        <a href="/2019/12/12/springboot-自动配置原理/" class="archive-article-date">
+  	<time datetime="2019-12-12T02:16:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-12</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="1-安装jdk"><a href="#1-安装jdk" class="headerlink" title="1.安装jdk"></a>1.安装jdk</h1><h2 id="1-1-下载jdk"><a href="#1-1-下载jdk" class="headerlink" title="1.1 下载jdk"></a>1.1 下载jdk</h2><pre><code>oracle 官网下载jdk1.8
-</code></pre><h2 id="1-2-上传到虚拟机上"><a href="#1-2-上传到虚拟机上" class="headerlink" title="1.2 上传到虚拟机上"></a>1.2 上传到虚拟机上</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp jdk-8u131-linux-x64.tar.gz root@192.168.66.67:~/</span><br></pre></td></tr></table></figure>
-<h3 id="1-3-解压配置环境变量"><a href="#1-3-解压配置环境变量" class="headerlink" title="1.3 解压配置环境变量"></a>1.3 解压配置环境变量</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> tar -xzvf jdk-8u131-linux-x64.tar.gz -C /usr/local/</span><br><span class="line"> ls</span><br><span class="line"> cd /usr/local/</span><br><span class="line"> ls</span><br><span class="line"> clear</span><br><span class="line"> ls</span><br><span class="line"> vi /etc/profile</span><br><span class="line"> source /etc/profile</span><br><span class="line"></span><br><span class="line"><span class="meta"> #</span># jdk env </span><br><span class="line">export JAVA_HOME=/usr/local/jdk1.8.0_131</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">source /etc/profile</span><br><span class="line"></span><br><span class="line">env </span><br><span class="line">java</span><br><span class="line">javac</span><br></pre></td></tr></table></figure>
-<p>完成..</p>
-<h1 id="2-安装zookeeper"><a href="#2-安装zookeeper" class="headerlink" title="2. 安装zookeeper"></a>2. 安装zookeeper</h1><h2 id="2-1-下载zookeeper"><a href="#2-1-下载zookeeper" class="headerlink" title="2.1 下载zookeeper"></a>2.1 下载zookeeper</h2><pre><code>使用wget 命令，如果linux 没有安装wget使用下面的命令安装
-</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install wget</span><br></pre></td></tr></table></figure>
-<pre><code>然后使用wget 获取资源
-</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://apache.fayea.com/zookeeper/zookeeper-3.4.9/zookeeper-3.4.9.tar.gz</span><br></pre></td></tr></table></figure>
-<pre><code>解压资源
-</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf zookeeper-3.4.9.tar.gz  -C /usr/local/</span><br></pre></td></tr></table></figure>
-<h2 id="2-2-配置zookeeper"><a href="#2-2-配置zookeeper" class="headerlink" title="2.2 配置zookeeper"></a>2.2 配置zookeeper</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">mkdir data</span><br><span class="line">mkdir logs</span><br><span class="line"></span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br><span class="line"></span><br><span class="line">vim zoo.cfg</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> The number of milliseconds of each tick</span><br><span class="line">tickTime=2000</span><br><span class="line"><span class="meta">#</span> The number of ticks that the initial</span><br><span class="line"><span class="meta">#</span> synchronization phase can take</span><br><span class="line">initLimit=10</span><br><span class="line"><span class="meta">#</span> The number of ticks that can pass between</span><br><span class="line"><span class="meta">#</span> sending a request and getting an acknowledgement</span><br><span class="line">syncLimit=5</span><br><span class="line"><span class="meta">#</span> the directory where the snapshot is stored.</span><br><span class="line"><span class="meta">#</span> do not use /tmp for storage, /tmp here is just</span><br><span class="line"><span class="meta">#</span> example sakes.</span><br><span class="line">dataDir=/usr/local/zookeeper-3.4.6/data</span><br><span class="line">dataLogDir=/usr/local/zookeeper-3.4.6/logs</span><br><span class="line"><span class="meta">#</span> the port at which the clients will connect</span><br><span class="line">clientPort=2181</span><br></pre></td></tr></table></figure>
-<pre><code>在/usr/local/zookeeper-3.4.6/data下创建myid文件,编辑 myid 文件，并在对应的 IP 的机器上输入对应的编号。如果只在单点上进行安装配置， 那么只有一个 server.1。
-</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi myid</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1</span><br></pre></td></tr></table></figure>
-<h2 id="2-3-把zookeeper-配置到环境变量方便操作"><a href="#2-3-把zookeeper-配置到环境变量方便操作" class="headerlink" title="2.3 把zookeeper 配置到环境变量方便操作"></a>2.3 把zookeeper 配置到环境变量方便操作</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> vi /etc/profie</span><br><span class="line"></span><br><span class="line"><span class="meta"> #</span># zookeeper env</span><br><span class="line">export ZOOKEEPER_HOME=/usr/local/zookeeper-3.4.6</span><br><span class="line">export PATH=$ZOOKEEPER_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">source /etc/profile</span><br><span class="line"></span><br><span class="line">env</span><br></pre></td></tr></table></figure>
-<h2 id="2-4-zkServer-sh-的使用"><a href="#2-4-zkServer-sh-的使用" class="headerlink" title="2.4 zkServer.sh 的使用"></a>2.4 zkServer.sh 的使用</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon bin]# sh zkServer.sh</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/local/zookeeper-3.4.9/bin/../conf/zoo.cfg</span><br><span class="line">Usage: zkServer.sh &#123;start|start-foreground|stop|restart|status|upgrade|print-cmd&#125;</span><br></pre></td></tr></table></figure>
-<pre><code>这个就是所有的参数
-</code></pre><ul>
-<li><p>查看状态</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh zkServer.sh status</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>启动server</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh zkServer.sh start</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看进程</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jsp</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看zookeeper 的输出</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f -n200 zookeeper.out</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>停止zookeeper server</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kill -9 [pid]</span><br><span class="line">sh zkSever.sh stop</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="3-zookeeper-命令行使用范例"><a href="#3-zookeeper-命令行使用范例" class="headerlink" title="3. zookeeper 命令行使用范例"></a>3. zookeeper 命令行使用范例</h2><ul>
-<li><p>查看所有命令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">help</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看历史</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">history</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>获取zknode 数据</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get [path]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>设置zknode</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set [path]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看所有的zknode</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls</span><br></pre></td></tr></table></figure></li>
-</ul>
+        <p>今天早上坐地铁看到了一篇管理springboot 自动装配的博客，自己也写过，只不过在csdn上，不在重复写了，直接引用地址</p>
+<p><a href="https://blog.csdn.net/qq_39148187/article/details/82154566" target="_blank" rel="noopener">https://blog.csdn.net/qq_39148187/article/details/82154566</a></p>
+<p><a href="https://mp.weixin.qq.com/s/ZxY_AiJ1m3z1kH6juh2XHw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/ZxY_AiJ1m3z1kH6juh2XHw</a></p>
 
       
 
@@ -262,6 +215,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">springboot 自动装配 spring</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -312,7 +276,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/11/28/zookeeper单节点安装配置/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/12/12/springboot-自动配置原理/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -326,18 +290,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/12/04/How-to-contribute-code-for-Open-source-project-in-GitHub/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/12/20/javascript-提交form表单/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          How to contribute code for Open source project in GitHub
+          javascript 提交form表单
         
       </div>
     </a>
   
   
-    <a href="/2019/11/26/动手写一个json-序列化工具-java实现/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">动手写一个json 序列化工具(java实现)</div>
+    <a href="/2019/12/11/J-U-C-线程池/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">J.U.C 线程池</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>zookeeper单节点安装配置 | ZZQ的</title>
+  <title>javascript 提交form表单 | ZZQ的</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.安装jdk1.1 下载jdkoracle 官网下载jdk1.8 1.2 上传到虚拟机上1scp jdk-8u131-linux-x64.tar.gz root@192.168.66.67:~/ 1.3 解压配置环境变量123456789101112131415161718 tar -xzvf jdk-8u131-linux-x64.tar.gz -C /usr/local/ ls cd /us">
-<meta name="keywords" content="前端,js,jquery,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验,JAVA,java,C#,redis,rabbitmq,nginx,tomcat,jvm">
+  <meta name="description" content="1. 概述可能想我们这种非科班出身的前段就不是多么牢固，前几天我就遇到了一个问题，如何使用ajax 提交form表单，还是带 input type=”file” 的那种，我找了好长时间博客，然后试出来了一种办法 2. formData 对象使用 如果使用js 提交表单也许你会去出发submit 按钮， 或者使用jquery的方法submit() ，但是这些都不是我说的那种 我们使用formData">
+<meta name="keywords" content="javascript form js jquery 前端">
 <meta property="og:type" content="article">
-<meta property="og:title" content="zookeeper单节点安装配置">
-<meta property="og:url" content="http://yoursite.com/2019/11/28/zookeeper单节点安装配置/index.html">
+<meta property="og:title" content="javascript 提交form表单">
+<meta property="og:url" content="http://yoursite.com/2019/12/20/javascript-提交form表单/index.html">
 <meta property="og:site_name" content="ZZQ的">
-<meta property="og:description" content="1.安装jdk1.1 下载jdkoracle 官网下载jdk1.8 1.2 上传到虚拟机上1scp jdk-8u131-linux-x64.tar.gz root@192.168.66.67:~/ 1.3 解压配置环境变量123456789101112131415161718 tar -xzvf jdk-8u131-linux-x64.tar.gz -C /usr/local/ ls cd /us">
+<meta property="og:description" content="1. 概述可能想我们这种非科班出身的前段就不是多么牢固，前几天我就遇到了一个问题，如何使用ajax 提交form表单，还是带 input type=”file” 的那种，我找了好长时间博客，然后试出来了一种办法 2. formData 对象使用 如果使用js 提交表单也许你会去出发submit 按钮， 或者使用jquery的方法submit() ，但是这些都不是我说的那种 我们使用formData">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-11-28T08:05:20.000Z">
+<meta property="og:updated_time" content="2019-12-20T06:40:45.792Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zookeeper单节点安装配置">
-<meta name="twitter:description" content="1.安装jdk1.1 下载jdkoracle 官网下载jdk1.8 1.2 上传到虚拟机上1scp jdk-8u131-linux-x64.tar.gz root@192.168.66.67:~/ 1.3 解压配置环境变量123456789101112131415161718 tar -xzvf jdk-8u131-linux-x64.tar.gz -C /usr/local/ ls cd /us">
+<meta name="twitter:title" content="javascript 提交form表单">
+<meta name="twitter:description" content="1. 概述可能想我们这种非科班出身的前段就不是多么牢固，前几天我就遇到了一个问题，如何使用ajax 提交form表单，还是带 input type=”file” 的那种，我找了好长时间博客，然后试出来了一种办法 2. formData 对象使用 如果使用js 提交表单也许你会去出发submit 按钮， 或者使用jquery的方法submit() ，但是这些都不是我说的那种 我们使用formData">
   
     <link rel="alternative" href="/atom.xml" title="ZZQ的" type="application/atom+xml">
   
@@ -153,75 +153,60 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-zookeeper单节点安装配置" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-javascript-提交form表单" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      zookeeper单节点安装配置
+      javascript 提交form表单
     </h1>
   
 
         
-        <a href="/2019/11/28/zookeeper单节点安装配置/" class="archive-article-date">
-  	<time datetime="2019-11-28T06:57:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-28</time>
+        <a href="/2019/12/20/javascript-提交form表单/" class="archive-article-date">
+  	<time datetime="2019-12-20T06:15:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-20</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="1-安装jdk"><a href="#1-安装jdk" class="headerlink" title="1.安装jdk"></a>1.安装jdk</h1><h2 id="1-1-下载jdk"><a href="#1-1-下载jdk" class="headerlink" title="1.1 下载jdk"></a>1.1 下载jdk</h2><pre><code>oracle 官网下载jdk1.8
-</code></pre><h2 id="1-2-上传到虚拟机上"><a href="#1-2-上传到虚拟机上" class="headerlink" title="1.2 上传到虚拟机上"></a>1.2 上传到虚拟机上</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp jdk-8u131-linux-x64.tar.gz root@192.168.66.67:~/</span><br></pre></td></tr></table></figure>
-<h3 id="1-3-解压配置环境变量"><a href="#1-3-解压配置环境变量" class="headerlink" title="1.3 解压配置环境变量"></a>1.3 解压配置环境变量</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> tar -xzvf jdk-8u131-linux-x64.tar.gz -C /usr/local/</span><br><span class="line"> ls</span><br><span class="line"> cd /usr/local/</span><br><span class="line"> ls</span><br><span class="line"> clear</span><br><span class="line"> ls</span><br><span class="line"> vi /etc/profile</span><br><span class="line"> source /etc/profile</span><br><span class="line"></span><br><span class="line"><span class="meta"> #</span># jdk env </span><br><span class="line">export JAVA_HOME=/usr/local/jdk1.8.0_131</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">source /etc/profile</span><br><span class="line"></span><br><span class="line">env </span><br><span class="line">java</span><br><span class="line">javac</span><br></pre></td></tr></table></figure>
-<p>完成..</p>
-<h1 id="2-安装zookeeper"><a href="#2-安装zookeeper" class="headerlink" title="2. 安装zookeeper"></a>2. 安装zookeeper</h1><h2 id="2-1-下载zookeeper"><a href="#2-1-下载zookeeper" class="headerlink" title="2.1 下载zookeeper"></a>2.1 下载zookeeper</h2><pre><code>使用wget 命令，如果linux 没有安装wget使用下面的命令安装
-</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install wget</span><br></pre></td></tr></table></figure>
-<pre><code>然后使用wget 获取资源
-</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://apache.fayea.com/zookeeper/zookeeper-3.4.9/zookeeper-3.4.9.tar.gz</span><br></pre></td></tr></table></figure>
-<pre><code>解压资源
-</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf zookeeper-3.4.9.tar.gz  -C /usr/local/</span><br></pre></td></tr></table></figure>
-<h2 id="2-2-配置zookeeper"><a href="#2-2-配置zookeeper" class="headerlink" title="2.2 配置zookeeper"></a>2.2 配置zookeeper</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">mkdir data</span><br><span class="line">mkdir logs</span><br><span class="line"></span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br><span class="line"></span><br><span class="line">vim zoo.cfg</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> The number of milliseconds of each tick</span><br><span class="line">tickTime=2000</span><br><span class="line"><span class="meta">#</span> The number of ticks that the initial</span><br><span class="line"><span class="meta">#</span> synchronization phase can take</span><br><span class="line">initLimit=10</span><br><span class="line"><span class="meta">#</span> The number of ticks that can pass between</span><br><span class="line"><span class="meta">#</span> sending a request and getting an acknowledgement</span><br><span class="line">syncLimit=5</span><br><span class="line"><span class="meta">#</span> the directory where the snapshot is stored.</span><br><span class="line"><span class="meta">#</span> do not use /tmp for storage, /tmp here is just</span><br><span class="line"><span class="meta">#</span> example sakes.</span><br><span class="line">dataDir=/usr/local/zookeeper-3.4.6/data</span><br><span class="line">dataLogDir=/usr/local/zookeeper-3.4.6/logs</span><br><span class="line"><span class="meta">#</span> the port at which the clients will connect</span><br><span class="line">clientPort=2181</span><br></pre></td></tr></table></figure>
-<pre><code>在/usr/local/zookeeper-3.4.6/data下创建myid文件,编辑 myid 文件，并在对应的 IP 的机器上输入对应的编号。如果只在单点上进行安装配置， 那么只有一个 server.1。
-</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi myid</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1</span><br></pre></td></tr></table></figure>
-<h2 id="2-3-把zookeeper-配置到环境变量方便操作"><a href="#2-3-把zookeeper-配置到环境变量方便操作" class="headerlink" title="2.3 把zookeeper 配置到环境变量方便操作"></a>2.3 把zookeeper 配置到环境变量方便操作</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> vi /etc/profie</span><br><span class="line"></span><br><span class="line"><span class="meta"> #</span># zookeeper env</span><br><span class="line">export ZOOKEEPER_HOME=/usr/local/zookeeper-3.4.6</span><br><span class="line">export PATH=$ZOOKEEPER_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">source /etc/profile</span><br><span class="line"></span><br><span class="line">env</span><br></pre></td></tr></table></figure>
-<h2 id="2-4-zkServer-sh-的使用"><a href="#2-4-zkServer-sh-的使用" class="headerlink" title="2.4 zkServer.sh 的使用"></a>2.4 zkServer.sh 的使用</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@bogon bin]# sh zkServer.sh</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/local/zookeeper-3.4.9/bin/../conf/zoo.cfg</span><br><span class="line">Usage: zkServer.sh &#123;start|start-foreground|stop|restart|status|upgrade|print-cmd&#125;</span><br></pre></td></tr></table></figure>
-<pre><code>这个就是所有的参数
-</code></pre><ul>
-<li><p>查看状态</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh zkServer.sh status</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>启动server</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh zkServer.sh start</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看进程</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jsp</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看zookeeper 的输出</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f -n200 zookeeper.out</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>停止zookeeper server</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kill -9 [pid]</span><br><span class="line">sh zkSever.sh stop</span><br></pre></td></tr></table></figure>
+        <h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h1><p>可能想我们这种非科班出身的前段就不是多么牢固，前几天我就遇到了一个问题，如何使用ajax 提交form表单，还是带 input type=”file” 的那种，我找了好长时间博客，然后试出来了一种办法</p>
+<h1 id="2-formData-对象使用"><a href="#2-formData-对象使用" class="headerlink" title="2. formData 对象使用"></a>2. formData 对象使用</h1><ul>
+<li>如果使用js 提交表单也许你会去出发submit 按钮， 或者使用jquery的方法submit() ，但是这些都不是我说的那种</li>
+<li>我们使用formData 一步到位</li>
+<li>formData 是一个native 对象，如果你在浏览器的console 中输入formData ，他就会出现这种情况<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ƒ FormData() &#123; [native code] &#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="3-zookeeper-命令行使用范例"><a href="#3-zookeeper-命令行使用范例" class="headerlink" title="3. zookeeper 命令行使用范例"></a>3. zookeeper 命令行使用范例</h2><ul>
-<li><p>查看所有命令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">help</span><br></pre></td></tr></table></figure>
+<h1 id="3-构造函数"><a href="#3-构造函数" class="headerlink" title="3. 构造函数"></a>3. 构造函数</h1><ul>
+<li><code>FormData()</code> 直接new 就可以创建一个新的formData 对象<h1 id="4-方法"><a href="#4-方法" class="headerlink" title="4. 方法"></a>4. 方法</h1></li>
+<li><code>append(key)</code> 直接向formdata中添加一个新的键值对，他的key value 都是可以重复的</li>
+<li><code>delete(key)</code> 删除一个键值对</li>
+<li><code>get(key)</code> </li>
+<li><code>getAll()</code> </li>
+<li><code>has(key)</code></li>
+<li><code>keys()</code></li>
+<li><code>set(key,value)</code> 设置key value 的值，如果key 存在，就覆盖原来的，如果不存在就直接新增一项</li>
+<li><code>values()</code> 返回包含所有值得iterator 对象<h1 id="5-通过ajax-发送formData-数据"><a href="#5-通过ajax-发送formData-数据" class="headerlink" title="5. 通过ajax 发送formData 数据"></a>5. 通过ajax 发送formData 数据</h1></li>
+<li><p>创建一个formData 通过append 方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> formData = <span class="keyword">new</span> FormData();</span><br><span class="line"></span><br><span class="line">formData.append(<span class="string">"username"</span>, <span class="string">"Groucho"</span>);</span><br><span class="line">formData.append(<span class="string">"accountnum"</span>, <span class="number">123456</span>); <span class="comment">// number 123456 is immediately converted to a string "123456"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// HTML file input, chosen by user</span></span><br><span class="line">formData.append(<span class="string">"userfile"</span>, fileInputElement.files[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// JavaScript file-like object</span></span><br><span class="line"><span class="keyword">var</span> content = <span class="string">'&lt;a id="a"&gt;&lt;b id="b"&gt;hey!&lt;/b&gt;&lt;/a&gt;'</span>; <span class="comment">// the body of the new file...</span></span><br><span class="line"><span class="keyword">var</span> blob = <span class="keyword">new</span> Blob([content], &#123; <span class="attr">type</span>: <span class="string">"text/xml"</span>&#125;);</span><br><span class="line"></span><br><span class="line">formData.append(<span class="string">"webmasterfile"</span>, blob);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> request = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">request.open(<span class="string">"POST"</span>, <span class="string">"http://foo.com/submitform.php"</span>);</span><br><span class="line">request.send(formData);</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>查看历史</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">history</span><br></pre></td></tr></table></figure>
+<li><p>接受一个formdata 对象通过html form</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> formElement = <span class="built_in">document</span>.querySelector(<span class="string">"form"</span>);</span><br><span class="line"><span class="keyword">var</span> formData = <span class="keyword">new</span> FormData(formElement);</span><br><span class="line"><span class="keyword">var</span> request = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">request.open(<span class="string">"POST"</span>, <span class="string">"submitform.php"</span>);</span><br><span class="line">formData.append(<span class="string">"serialnumber"</span>, serialNumber++);</span><br><span class="line">request.send(formData);</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>获取zknode 数据</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get [path]</span><br></pre></td></tr></table></figure>
+<li><p>发送 表单包含文件的form表单</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span> <span class="attr">method</span>=<span class="string">"post"</span> <span class="attr">name</span>=<span class="string">"fileinfo"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">label</span>&gt;</span>Your email address:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"email"</span> <span class="attr">autocomplete</span>=<span class="string">"on"</span> <span class="attr">autofocus</span> <span class="attr">name</span>=<span class="string">"userid"</span> <span class="attr">placeholder</span>=<span class="string">"email"</span> <span class="attr">required</span> <span class="attr">size</span>=<span class="string">"32"</span> <span class="attr">maxlength</span>=<span class="string">"64"</span> /&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">label</span>&gt;</span>Custom file label:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"filelabel"</span> <span class="attr">size</span>=<span class="string">"12"</span> <span class="attr">maxlength</span>=<span class="string">"32"</span> /&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">label</span>&gt;</span>File to stash:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"file"</span> <span class="attr">required</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"Stash the file!"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>设置zknode</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set [path]</span><br></pre></td></tr></table></figure>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> form = <span class="built_in">document</span>.forms.namedItem(<span class="string">"fileinfo"</span>);</span><br><span class="line">form.addEventListener(<span class="string">'submit'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> oOutput = <span class="built_in">document</span>.querySelector(<span class="string">"div"</span>),</span><br><span class="line">      oData = <span class="keyword">new</span> FormData(form);</span><br><span class="line"></span><br><span class="line">  oData.append(<span class="string">"CustomField"</span>, <span class="string">"This is some extra data"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> oReq = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">  oReq.open(<span class="string">"POST"</span>, <span class="string">"stash.php"</span>, <span class="literal">true</span>);</span><br><span class="line">  oReq.onload = <span class="function"><span class="keyword">function</span>(<span class="params">oEvent</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (oReq.status == <span class="number">200</span>) &#123;</span><br><span class="line">      oOutput.innerHTML = <span class="string">"Uploaded!"</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      oOutput.innerHTML = <span class="string">"Error "</span> + oReq.status + <span class="string">" occurred when trying to upload your file.&lt;br \/&gt;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  oReq.send(oData);</span><br><span class="line">  ev.preventDefault();</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>也可以使用append()方法去添加blob到formData 对象</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.append(<span class="string">"myfile"</span>, myBlob, <span class="string">"filename.txt"</span>);</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>查看所有的zknode</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls</span><br></pre></td></tr></table></figure></li>
+<li><p>使用ajax 提交数据</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fd = <span class="keyword">new</span> FormData(<span class="built_in">document</span>.querySelector(<span class="string">"form"</span>));</span><br><span class="line">fd.append(<span class="string">"CustomField"</span>, <span class="string">"This is some extra data"</span>);</span><br><span class="line">$.ajax(&#123;</span><br><span class="line">  url: <span class="string">"stash.php"</span>,</span><br><span class="line">  type: <span class="string">"POST"</span>,</span><br><span class="line">  data: fd,</span><br><span class="line">  processData: <span class="literal">false</span>,  <span class="comment">// 不处理数据</span></span><br><span class="line">  contentType: <span class="literal">false</span>   <span class="comment">// 不设置内容类型</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
 </ul>
 
       
@@ -262,6 +247,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">javascript form js jquery 前端</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -312,7 +308,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/11/28/zookeeper单节点安装配置/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/12/20/javascript-提交form表单/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -326,18 +322,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/12/04/How-to-contribute-code-for-Open-source-project-in-GitHub/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          How to contribute code for Open source project in GitHub
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/11/26/动手写一个json-序列化工具-java实现/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">动手写一个json 序列化工具(java实现)</div>
+    <a href="/2019/12/12/springboot-自动配置原理/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">springboot 自动配置原理</div>
       <i class="icon-circle-right"></i>
     </a>
   
