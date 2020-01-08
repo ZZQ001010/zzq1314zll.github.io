@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>spring-cloud consul 使用 | ZZQ的</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1. 简介">
+  <meta name="description" content="1. 简介Consul 是一个支持多数据中心分布式高可用的服务发现和配置共享的服务软件.Consul 由 HashiCorp公司用Go语言开发, 基于Mozilla Public License 2.0的协议进行开源.Consul 支持健康检查,并允许 HTTP 和 DNS 协议调用 API 存储键值对.命令行超级好用的虚拟机管理软件 vgrant 也是 HashiCorp 公司开发的产品.一致性">
 <meta name="keywords" content="springcloud consul">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spring-cloud consul 使用">
 <meta property="og:url" content="http://yoursite.com/2019/12/05/spring-cloud-consul-使用/index.html">
 <meta property="og:site_name" content="ZZQ的">
-<meta property="og:description" content="1. 简介">
+<meta property="og:description" content="1. 简介Consul 是一个支持多数据中心分布式高可用的服务发现和配置共享的服务软件.Consul 由 HashiCorp公司用Go语言开发, 基于Mozilla Public License 2.0的协议进行开源.Consul 支持健康检查,并允许 HTTP 和 DNS 协议调用 API 存储键值对.命令行超级好用的虚拟机管理软件 vgrant 也是 HashiCorp 公司开发的产品.一致性">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-07T14:26:05.000Z">
+<meta property="og:updated_time" content="2019-12-24T06:48:49.017Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spring-cloud consul 使用">
-<meta name="twitter:description" content="1. 简介">
+<meta name="twitter:description" content="1. 简介Consul 是一个支持多数据中心分布式高可用的服务发现和配置共享的服务软件.Consul 由 HashiCorp公司用Go语言开发, 基于Mozilla Public License 2.0的协议进行开源.Consul 支持健康检查,并允许 HTTP 和 DNS 协议调用 API 存储键值对.命令行超级好用的虚拟机管理软件 vgrant 也是 HashiCorp 公司开发的产品.一致性">
   
     <link rel="alternative" href="/atom.xml" title="ZZQ的" type="application/atom+xml">
   
@@ -173,7 +173,46 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1>
+        <h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><p>Consul 是一个支持多数据中心分布式高可用的服务发现和配置共享的服务软件.<br>Consul 由 HashiCorp公司用Go语言开发, 基于Mozilla Public License 2.0的协议进行开源.<br>Consul 支持健康检查,并允许 HTTP 和 DNS 协议调用 API 存储键值对.<br>命令行超级好用的虚拟机管理软件 vgrant 也是 HashiCorp 公司开发的产品.<br>一致性协议采用 Raft 算法,用来保证服务的高可用. 使用 GOSSIP 协议管理成员和广播消息, 并且支持 ACL 访问控制.<br>consul members</p>
+<h1 id="2-consul-单机安装使用"><a href="#2-consul-单机安装使用" class="headerlink" title="2. consul 单机安装使用"></a>2. consul 单机安装使用</h1><h2 id="2-1-consul-server-安装"><a href="#2-1-consul-server-安装" class="headerlink" title="2.1 consul server 安装"></a>2.1 consul server 安装</h2><ul>
+<li>下载地址    <a href="https://www.consul.io/downloads.html" target="_blank" rel="noopener">https://www.consul.io/downloads.html</a></li>
+<li>解压，有一个二进制文件</li>
+<li><p>执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">consul agent -dev -data-dir =/tmp/consul</span><br></pre></td></tr></table></figure>
+<ul>
+<li>data-dir 是元数据存放的位置<h2 id="2-2-服务注册"><a href="#2-2-服务注册" class="headerlink" title="2.2 服务注册"></a>2.2 服务注册</h2></li>
+</ul>
+</li>
+<li>如果使用java 程序引入java 的client 包，使用别的语言引入相对应的依赖(或者你自己基于consul-server 提供的restapi 自己搞一个客户端也行)</li>
+<li>如果是java 并且使用springboot 呢就按照以下配置<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">    server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">9996</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">dc1-consul-provider</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    consul:</span></span><br><span class="line"><span class="attr">      host:</span> <span class="number">10.10</span><span class="number">.200</span><span class="number">.66</span></span><br><span class="line"><span class="attr">      port:</span> <span class="number">8500</span></span><br><span class="line"><span class="attr">      discovery:</span></span><br><span class="line"><span class="attr">        service-name:</span> <span class="string">dc1-consul-provider</span></span><br><span class="line"><span class="attr">        register-health-check:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="3-consul-集群安装使用"><a href="#3-consul-集群安装使用" class="headerlink" title="3. consul 集群安装使用"></a>3. consul 集群安装使用</h1><h2 id="3-1-consul-集群安装"><a href="#3-1-consul-集群安装" class="headerlink" title="3.1 consul 集群安装"></a>3.1 consul 集群安装</h2><ul>
+<li>下载完consul server 之后,直接show code<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> nohup consul agent \</span><br><span class="line">-client=0.0.0.0 \</span><br><span class="line">-server \</span><br><span class="line">-ui \</span><br><span class="line">-bootstrap-expect 3 \</span><br><span class="line">-data-dir=/usr/local/consul/cluster_data/ \</span><br><span class="line">-config-dir=/usr/local/consul/cluster_conf/ \</span><br><span class="line">-pid-file=/usr/local/consul/pid/8501 \</span><br><span class="line">-log-level=info \</span><br><span class="line">-log-file=/usr/local/consul/log/log/consul_log.log \</span><br><span class="line"><span class="meta">1&gt;</span>&gt;/usr/local/consul/log/out/consul.log \</span><br><span class="line"><span class="meta">2&gt;</span>&gt;/usr/local/consul/log/err/consul_err.log &amp;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="3-1-1-解释下参数的意思"><a href="#3-1-1-解释下参数的意思" class="headerlink" title="3.1.1 解释下参数的意思"></a>3.1.1 解释下参数的意思</h3><ul>
+<li>client 意思就是接入的客户端的ip地址，如果设置成0.0.0.0 意思就是谁都能注册上来</li>
+<li>server 意思是以server 模式启动</li>
+<li>ui 意思是显示管理页面，也就是8500(默认) 端口</li>
+<li>bootstrap-expect 意思是指定集群中节点的数量，<strong>这个命令需要和-server 配合使用</strong> consul 会等待节点数量够了之后，对外提供服务，然后自动选举出来leader节点</li>
+<li>data-dir 元数据存放的目录</li>
+<li>config-dir 配置文件存放的目录</li>
+<li>pid-file pid 存放的目录</li>
+<li>log-level 日志级别</li>
+<li>log-file 日志文件位置</li>
+<li><p>后面两句是吧标准流输入到log 日志中，吧错误流输入到err.log 中</p>
+<p>执行命令之后就会启动一个节点,然后后续的每个节点执行以下命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> nohup consul agent \</span><br><span class="line">-client=0.0.0.0 \</span><br><span class="line">-server \</span><br><span class="line">-ui \</span><br><span class="line">-join=10.10.200.66 \</span><br><span class="line">-data-dir=/usr/local/consul/cluster_data/ \</span><br><span class="line">-config-dir=/usr/local/consul/cluster_conf/ \</span><br><span class="line">-pid-file=/usr/local/consul/pid/8500 \</span><br><span class="line">-log-level=info \</span><br><span class="line">-log-file=/usr/local/consul/log/log/consul_log.log \</span><br><span class="line"><span class="meta">1&gt;</span>&gt;/usr/local/consul/log/out/consul.log \</span><br><span class="line"><span class="meta">2&gt;</span>&gt;/usr/local/consul/log/err/consul_err.log &amp;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="3-1-2-解释下参数的意思"><a href="#3-1-2-解释下参数的意思" class="headerlink" title="3.1.2 解释下参数的意思"></a>3.1.2 解释下参数的意思</h3><ul>
+<li>join 吧当前节点接入集群中<h2 id="3-2-consul-客户端注册"><a href="#3-2-consul-客户端注册" class="headerlink" title="3.2 consul 客户端注册"></a>3.2 consul 客户端注册</h2></li>
+<li>使用springboot yml 中这样配置就ok<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">    server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">9996</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">dc1-consul-provider</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    consul:</span></span><br><span class="line"><span class="attr">      host:</span> <span class="number">10.10</span><span class="number">.200</span><span class="number">.66</span><span class="string">:8500,10.10.200.125:8500,10.10.200.128:8500</span></span><br><span class="line"><span class="attr">      discovery:</span></span><br><span class="line"><span class="attr">        service-name:</span> <span class="string">dc1-consul-provider</span></span><br><span class="line"><span class="attr">        register-health-check:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>有空看看consul server 的源代码!</p>
+
       
 
       
@@ -341,7 +380,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 ZZQ的
+    		&copy; 2020 ZZQ的
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -424,7 +463,31 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Executor juc 线程池 并发 线程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">hadoop</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">hadoop 大数据 bigdata</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">github openSource</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">blog</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">java date dateTime LocalDateTime 时间 日期 时间戳</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -432,7 +495,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">java date dateTime LocalDateTime 时间 日期 时间戳</a>
+                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">redis rediscluster 缓存 java springcloud jedis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -448,23 +515,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springcloud consul</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">github openSource</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">springboot 自动装配 spring</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
+                <a href="javascript:void(0)" class="js-tag color2">spring springboot springcloud webFlux 包冲突</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">blog</a>
+                <a href="javascript:void(0)" class="js-tag color3">spring 事务 隔离级别 特性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">springcloud consul</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -477,6 +540,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql redis 高并发 数据库 缓存 流量</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">springcloud ribbon</a>
               </li>
              
               <li class="article-tag-list-item">
