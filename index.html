@@ -174,7 +174,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="为何标注-LoadBlancer注解的Resttemplate-就会实现负载均衡呢"><a href="#为何标注-LoadBlancer注解的Resttemplate-就会实现负载均衡呢" class="headerlink" title="为何标注@LoadBlancer注解的Resttemplate 就会实现负载均衡呢?"></a>为何标注@LoadBlancer注解的Resttemplate 就会实现负载均衡呢?</h1><ul>
+        <h1 id="为何标注-LoadBlancer注解的Restemplate-就会实现负载均衡呢"><a href="#为何标注-LoadBlancer注解的Restemplate-就会实现负载均衡呢" class="headerlink" title="为何标注@LoadBlancer注解的Restemplate 就会实现负载均衡呢?"></a>为何标注@LoadBlancer注解的Restemplate 就会实现负载均衡呢?</h1><ul>
 <li><p>查看@LoadBlancer 的注解</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Annotation to mark a RestTemplate bean to be configured to use a LoadBalancerClient.</span></span><br><span class="line"><span class="comment"> *  注解去标记 restemplate 实例 去配置使用LoadBalancerClient </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Spencer Gibb</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Target</span>(&#123; ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD &#125;)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@Qualifier</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> LoadBalanced &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
@@ -1045,11 +1045,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
+                <a href="javascript:void(0)" class="js-tag color3">github openSource</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Executor juc 线程池 并发 线程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1061,11 +1065,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">github openSource</a>
+                <a href="javascript:void(0)" class="js-tag color5">blog</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">blog</a>
+                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1077,19 +1081,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">redis rediscluster 缓存 java springcloud jedis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">javascript json javascript操作Json</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1097,7 +1089,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">springboot 自动装配 spring</a>
+                <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">redis rediscluster 缓存 java springcloud jedis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1105,7 +1101,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">spring 事务 隔离级别 特性</a>
+                <a href="javascript:void(0)" class="js-tag color3">springboot 自动装配 spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1114,6 +1110,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">hexo 使用 问题 hexo问题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">spring 事务 隔离级别 特性</a>
               </li>
              
               <li class="article-tag-list-item">
