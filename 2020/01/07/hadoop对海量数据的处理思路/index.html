@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>hadoop对海量数据的处理思路 | ZZQ的</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="怎么解决海量数据存储？">
+  <meta name="description" content="怎么解决海量数据存储？ 之前nfs使用磁盘共享，但是在应用场景复杂的情况下，nfs还是显得的比较low，比如高可用，数据一致，性能等HDFS使用HDFS 做分布式海量数据存储 分布式： 数据散落在集群中各个节点上 高可用：个个节点有备份节点，备份数据，概念 HDFS存储数据的叫做dataNode，提供对切分之后数据的存储和读操作， 对外访问的路径，要和对内dataNode上的数据片对应起来，这个时">
 <meta name="keywords" content="hadoop">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hadoop对海量数据的处理思路">
 <meta property="og:url" content="http://yoursite.com/2020/01/07/hadoop对海量数据的处理思路/index.html">
 <meta property="og:site_name" content="ZZQ的">
-<meta property="og:description" content="怎么解决海量数据存储？">
+<meta property="og:description" content="怎么解决海量数据存储？ 之前nfs使用磁盘共享，但是在应用场景复杂的情况下，nfs还是显得的比较low，比如高可用，数据一致，性能等HDFS使用HDFS 做分布式海量数据存储 分布式： 数据散落在集群中各个节点上 高可用：个个节点有备份节点，备份数据，概念 HDFS存储数据的叫做dataNode，提供对切分之后数据的存储和读操作， 对外访问的路径，要和对内dataNode上的数据片对应起来，这个时">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-01-07T03:32:33.123Z">
+<meta property="og:updated_time" content="2020-01-08T09:11:43.433Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hadoop对海量数据的处理思路">
-<meta name="twitter:description" content="怎么解决海量数据存储？">
+<meta name="twitter:description" content="怎么解决海量数据存储？ 之前nfs使用磁盘共享，但是在应用场景复杂的情况下，nfs还是显得的比较low，比如高可用，数据一致，性能等HDFS使用HDFS 做分布式海量数据存储 分布式： 数据散落在集群中各个节点上 高可用：个个节点有备份节点，备份数据，概念 HDFS存储数据的叫做dataNode，提供对切分之后数据的存储和读操作， 对外访问的路径，要和对内dataNode上的数据片对应起来，这个时">
   
     <link rel="alternative" href="/atom.xml" title="ZZQ的" type="application/atom+xml">
   
@@ -173,7 +173,20 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="怎么解决海量数据存储？"><a href="#怎么解决海量数据存储？" class="headerlink" title="怎么解决海量数据存储？"></a>怎么解决海量数据存储？</h1>
+        <h1 id="怎么解决海量数据存储？"><a href="#怎么解决海量数据存储？" class="headerlink" title="怎么解决海量数据存储？"></a>怎么解决海量数据存储？</h1><ul>
+<li>之前<code>nfs</code>使用磁盘共享，但是在应用场景复杂的情况下，<code>nfs</code>还是显得的比较low，比如高可用，数据一致，性能等<h2 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h2>使用<code>HDFS</code> 做分布式海量数据存储</li>
+<li>分布式： 数据散落在集群中各个节点上</li>
+<li>高可用：个个节点有备份节点，备份数据，<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3></li>
+<li><code>HDFS</code>存储数据的叫做<code>dataNode</code>，提供对切分之后数据的存储和读操作，</li>
+<li>对外访问的路径，要和对内dataNode上的数据片对应起来，这个时候就有一个记录真实数据路径和对外访问路径的映射关系，这个是有一个角色<code>NameNode</code>来统一管理<h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2></li>
+<li>先对数据进行Map操作，把计算拆分成小份，然后多个进程，线程同时并行/并发计算</li>
+<li>然后进行reduce 操作，吧所有线程/进程 计算出的结果进行汇总<h2 id="Hadoop-特点"><a href="#Hadoop-特点" class="headerlink" title="Hadoop 特点"></a>Hadoop 特点</h2></li>
+<li>扩容能力： 能可靠地存储处理千兆字节的数据(PB)</li>
+<li>成本低： 可以通过普通的机器来进行分发处理数据</li>
+<li>高效率： 通过分发数据，hadoop可以在数据所处的节点上并行的处理他们，这使得处理是非常快速的</li>
+<li>可靠性： hadoop自动维护多份副本，并在任务失败后自动的重新部署计算任务</li>
+</ul>
+
       
 
       
@@ -432,11 +445,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
+                <a href="javascript:void(0)" class="js-tag color2">hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">springcloud spring 链路追踪 链路监控</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -448,7 +461,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
+                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">hadoop hadoop伪分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -456,7 +473,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">javascript form js jquery 前端</a>
+                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -468,15 +485,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">redis rediscluster 缓存 java springcloud jedis</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">spring springboot springcloud webFlux 包冲突</a>
+                <a href="javascript:void(0)" class="js-tag color4">javascript form js jquery 前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">springcloud consul</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -484,7 +505,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springcloud consul</a>
+                <a href="javascript:void(0)" class="js-tag color2">spring springboot springcloud webFlux 包冲突</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -513,6 +534,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">集合框架  java.utils utils list List Map map HashMap hashmap ArrayList arraylist</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">springcloud consul 注册中心 consul-client</a>
               </li>
             
             <div class="clearfix"></div>

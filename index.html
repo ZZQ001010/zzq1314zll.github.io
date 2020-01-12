@@ -154,6 +154,317 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-spring-cloud-consul解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/12/spring-cloud-consul解析/">spring-cloud-consul解析</a>
+    </h1>
+  
+
+        
+        <a href="/2020/01/12/spring-cloud-consul解析/" class="archive-article-date">
+  	<time datetime="2020-01-12T12:42:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>公司因需要使用微服务注册中心consul，采用springcloud consul 来作为客户端，实现服务注册发现，本来consul ，所以自己就花费了两个小时研究研究，然后写了一篇文章，主要去剖析springcloud consul </p>
+<h1 id="springcloud-consul-模块划分"><a href="#springcloud-consul-模块划分" class="headerlink" title="springcloud consul 模块划分"></a>springcloud consul 模块划分</h1><p>使用idea 分析下模块之间的依赖<br><img src="https://tva1.sinaimg.cn/large/006tNbRwly1gau2fv7u70j30vi0iw47u.jpg" alt="avatar"></p>
+<ul>
+<li><p>但是这仅仅是我们工程中依赖的，<strong>不代表springcloud consul 就这几个模块</strong>详细的可以去github上查看<code>https://github.com/spring-cloud/spring-cloud-consul</code></p>
+<ul>
+<li><p><strong>spring-cloud-consul-core</strong> 通过名字可以得知，此模块应该是核心模块，大致浏览下包结构<br><img src="https://tva1.sinaimg.cn/large/006tNbRwly1gau2s83dinj30ta0t2qsx.jpg" alt="avatar"><br><em>Properties </em>AutoConfiguration： 应该是一些配置类</p>
+<p>*EndPoint: 应该是一些端点定义吧</p>
+<p>ConsulHeathIndicator：应该是和心跳检查有关的</p>
+</li>
+<li><strong>spring-cloud-consul-discovery</strong> 做服务发现的</li>
+<li><strong>spring-cloud-consul-binder</strong> 绑定者，应该是做事件绑定的</li>
+<li><strong>spring-cloud-consul-config</strong> 做配置的<h1 id="SpringCloud-Consul-Discovery"><a href="#SpringCloud-Consul-Discovery" class="headerlink" title="SpringCloud Consul Discovery"></a>SpringCloud Consul Discovery</h1><h2 id="spring-factories"><a href="#spring-factories" class="headerlink" title="spring.factories"></a>spring.factories</h2></li>
+</ul>
+</li>
+<li><p>我一般研究spring 这套东西都是先看他的<code>spring.factories</code>，这个文件里面发放的就是自动配置类，容器启动的时候就会去根据类头上标注的一些注解<code>*ConditionalOn*</code>来判断是否加载此类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    org.springframework.boot.autoconfigure.EnableAutoConfiguration=\</span><br><span class="line">org.springframework.cloud.consul.discovery.RibbonConsulAutoConfiguration,\</span><br><span class="line">org.springframework.cloud.consul.discovery.configclient.ConsulConfigServerAutoConfiguration,\</span><br><span class="line">org.springframework.cloud.consul.serviceregistry.ConsulAutoServiceRegistrationAutoConfiguration,\</span><br><span class="line">org.springframework.cloud.consul.serviceregistry.ConsulServiceRegistryAutoConfiguration,\</span><br><span class="line">org.springframework.cloud.consul.discovery.ConsulDiscoveryClientConfiguration,\</span><br><span class="line">org.springframework.cloud.consul.discovery.reactive.ConsulReactiveDiscoveryClientConfiguration,\</span><br><span class="line">org.springframework.cloud.consul.discovery.ConsulCatalogWatchAutoConfiguration, \</span><br><span class="line">org.springframework.cloud.consul.support.ConsulHeartbeatAutoConfiguration</span><br><span class="line">org.springframework.cloud.bootstrap.BootstrapConfiguration=\</span><br><span class="line">org.springframework.cloud.consul.discovery.configclient.ConsulDiscoveryClientConfigServiceBootstrapConfiguration</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>org.springframework.cloud.consul.discovery.RibbonConsulAutoConfiguration</code> 这个类其实是一个空的类，里面什么都没写，就一个构造方法，但是头上标注了一些注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties</span></span><br><span class="line"><span class="meta">@ConditionalOnConsulEnabled</span> <span class="comment">//当consul 开启的时候才会把当前类加载进容器中</span></span><br><span class="line"><span class="meta">@ConditionalOnBean</span>(&#123;SpringClientFactory.class&#125;) </span><br><span class="line"><span class="meta">@ConditionalOnProperty</span>(</span><br><span class="line">    value = &#123;<span class="string">"spring.cloud.consul.ribbon.enabled"</span>&#125;,</span><br><span class="line">    matchIfMissing = <span class="keyword">true</span></span><br><span class="line">)<span class="comment">//当ribbon 打开的时候才会去加载此类</span></span><br><span class="line"><span class="meta">@AutoConfigureAfter</span>(&#123;RibbonAutoConfiguration.class&#125;)<span class="comment">//此类加载容器之后，去加载RibbonAutoConfiguration</span></span><br><span class="line"><span class="meta">@RibbonClients</span>(</span><br><span class="line">    defaultConfiguration = &#123;ConsulRibbonClientConfiguration.class&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>ConsulRibbonClientConfiguration</code>,看到这个类的命名，让我想到了使用eureka 时候使用的<code>org.springframework.cloud.netflix.ribbon.eureka.EurekaRibbonClientConfiguration</code>,建议这两个对比看<br>其实spring 定义的这些规范，和接口都是很好的，所以有很多相似点,比如，<code>EurekaRibbonClientConfiguration</code> 会向容器中注册一个<code>EurekaServerIntrospector</code>，然后最终在初始化ribbon 的时候吧这个Introspector 放入进去，其实consul 也是一样的</p>
+<h2 id="org-springframework-cloud-consul-discovery-TtlScheduler"><a href="#org-springframework-cloud-consul-discovery-TtlScheduler" class="headerlink" title="org.springframework.cloud.consul.discovery.TtlScheduler"></a>org.springframework.cloud.consul.discovery.TtlScheduler</h2></li>
+<li><p>这个用来做心跳报告的，看了下源代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">//</span></span><br><span class="line"><span class="comment">// Source code recreated from a .class file by IntelliJ IDEA</span></span><br><span class="line"><span class="comment">// (powered by Fernflower decompiler)</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> org.springframework.cloud.consul.discovery;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.ecwid.consul.v1.ConsulClient;</span><br><span class="line"><span class="keyword">import</span> com.ecwid.consul.v1.agent.model.NewService;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ConcurrentHashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ScheduledFuture;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.logging.Log;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.logging.LogFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.scheduling.TaskScheduler;</span><br><span class="line"><span class="keyword">import</span> org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    这个里面能用的就两个方法，add remove ，</span></span><br><span class="line"><span class="comment">    add() </span></span><br><span class="line"><span class="comment">        为当前instance 创建了一个任务，这个任务就是他的内部实现类，实现了Runnable </span></span><br><span class="line"><span class="comment">        这个任务一直会去使用com.ecwid.consul.v1.ConsulClient 去检查节点，这个类就是干这个事情</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TtlScheduler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Log log = LogFactory.getLog(ConsulDiscoveryClient.class);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ScheduledFuture&gt; serviceHeartbeats = <span class="keyword">new</span> ConcurrentHashMap();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> TaskScheduler scheduler = <span class="keyword">new</span> ConcurrentTaskScheduler(Executors.newSingleThreadScheduledExecutor());</span><br><span class="line">    <span class="keyword">private</span> HeartbeatProperties configuration;</span><br><span class="line">    <span class="keyword">private</span> ConsulClient client;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TtlScheduler</span><span class="params">(HeartbeatProperties configuration, ConsulClient client)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.configuration = configuration;</span><br><span class="line">        <span class="keyword">this</span>.client = client;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** <span class="doctag">@deprecated</span> */</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">final</span> NewService service)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.add(service.getId());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(String instanceId)</span> </span>&#123;</span><br><span class="line">        ScheduledFuture task = <span class="keyword">this</span>.scheduler.scheduleAtFixedRate(<span class="keyword">new</span> TtlScheduler.ConsulHeartbeatTask(instanceId), <span class="keyword">this</span>.configuration.computeHearbeatInterval().toStandardDuration().getMillis());</span><br><span class="line">        ScheduledFuture previousTask = (ScheduledFuture)<span class="keyword">this</span>.serviceHeartbeats.put(instanceId, task);</span><br><span class="line">        <span class="keyword">if</span> (previousTask != <span class="keyword">null</span>) &#123;</span><br><span class="line">            previousTask.cancel(<span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(String instanceId)</span> </span>&#123;</span><br><span class="line">        ScheduledFuture task = (ScheduledFuture)<span class="keyword">this</span>.serviceHeartbeats.get(instanceId);</span><br><span class="line">        <span class="keyword">if</span> (task != <span class="keyword">null</span>) &#123;</span><br><span class="line">            task.cancel(<span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.serviceHeartbeats.remove(instanceId);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsulHeartbeatTask</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> String checkId;</span><br><span class="line"></span><br><span class="line">        ConsulHeartbeatTask(String serviceId) &#123;</span><br><span class="line">            <span class="keyword">this</span>.checkId = serviceId;</span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">this</span>.checkId.startsWith(<span class="string">"service:"</span>)) &#123;</span><br><span class="line">                <span class="keyword">this</span>.checkId = <span class="string">"service:"</span> + <span class="keyword">this</span>.checkId;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            TtlScheduler.<span class="keyword">this</span>.client.agentCheckPass(<span class="keyword">this</span>.checkId);</span><br><span class="line">            <span class="keyword">if</span> (TtlScheduler.log.isDebugEnabled()) &#123;</span><br><span class="line">                TtlScheduler.log.debug(<span class="string">"Sending consul heartbeat for: "</span> + <span class="keyword">this</span>.checkId);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这个类什么时候去生效呢？<code>org.springframework.cloud.consul.serviceregistry.ConsulServiceRegistry</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(ConsulRegistration reg)</span> </span>&#123;</span><br><span class="line">		log.info(<span class="string">"Registering service with consul: "</span> + reg.getService());</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">this</span>.client.agentServiceRegister(reg.getService(),</span><br><span class="line">					<span class="keyword">this</span>.properties.getAclToken());</span><br><span class="line">			NewService service = reg.getService();</span><br><span class="line">			<span class="keyword">if</span> (<span class="keyword">this</span>.heartbeatProperties.isEnabled() &amp;&amp; <span class="keyword">this</span>.ttlScheduler != <span class="keyword">null</span> <span class="comment">//注册的时候，如果配置了spring.cloud.consul.discovery.heartbeat.enabled ,就会把当前实例，instanceid 添加到这个任务调度中，也就是给他进行心跳</span></span><br><span class="line">					&amp;&amp; service.getCheck() != <span class="keyword">null</span></span><br><span class="line">					&amp;&amp; service.getCheck().getTtl() != <span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="keyword">this</span>.ttlScheduler.add(reg.getInstanceId());</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (ConsulException e) &#123;</span><br><span class="line">			<span class="keyword">if</span> (<span class="keyword">this</span>.properties.isFailFast()) &#123;</span><br><span class="line">				log.error(<span class="string">"Error registering service with consul: "</span> + reg.getService(),</span><br><span class="line">						e);</span><br><span class="line">				ReflectionUtils.rethrowRuntimeException(e);</span><br><span class="line">			&#125;</span><br><span class="line">			log.warn(<span class="string">"Failfast is false. Error registering service with consul: "</span></span><br><span class="line">					+ reg.getService(), e);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="org-springframework-cloud-consul-serviceregistry-ConsulServiceRegistry"><a href="#org-springframework-cloud-consul-serviceregistry-ConsulServiceRegistry" class="headerlink" title="org.springframework.cloud.consul.serviceregistry.ConsulServiceRegistry"></a>org.springframework.cloud.consul.serviceregistry.ConsulServiceRegistry</h2><ul>
+<li><p>顾名思义，注册服务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">   <span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(ConsulRegistration reg)</span> </span>&#123;</span><br><span class="line">	log.info(<span class="string">"Registering service with consul: "</span> + reg.getService());</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="keyword">this</span>.client.agentServiceRegister(reg.getService(),</span><br><span class="line">				<span class="keyword">this</span>.properties.getAclToken()); <span class="comment">//直接注册服务，通过consulclient</span></span><br><span class="line">		NewService service = reg.getService();</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.heartbeatProperties.isEnabled() &amp;&amp; <span class="keyword">this</span>.ttlScheduler != <span class="keyword">null</span></span><br><span class="line">				&amp;&amp; service.getCheck() != <span class="keyword">null</span></span><br><span class="line">				&amp;&amp; service.getCheck().getTtl() != <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">this</span>.ttlScheduler.add(reg.getInstanceId()); <span class="comment">//然后是否开启心跳</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (ConsulException e) &#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.properties.isFailFast()) &#123;</span><br><span class="line">			log.error(<span class="string">"Error registering service with consul: "</span> + reg.getService(),</span><br><span class="line">					e);</span><br><span class="line">			ReflectionUtils.rethrowRuntimeException(e);</span><br><span class="line">		&#125;</span><br><span class="line">		log.warn(<span class="string">"Failfast is false. Error registering service with consul: "</span></span><br><span class="line">				+ reg.getService(), e);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deregister</span><span class="params">(ConsulRegistration reg)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">this</span>.ttlScheduler != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">this</span>.ttlScheduler.remove(reg.getInstanceId()); <span class="comment">//反注册服务</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (log.isInfoEnabled()) &#123;</span><br><span class="line">		log.info(<span class="string">"Deregistering service with consul: "</span> + reg.getInstanceId());</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">this</span>.client.agentServiceDeregister(reg.getInstanceId(),</span><br><span class="line">			<span class="keyword">this</span>.properties.getAclToken());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从这里我们知道，spring cloud consul ，其实就是拿着<code>com.ecwid.consul consul-api</code>这个开源包，整合consul 的，consul-api 就是对consul 提供的open api 使用java代码提供而已</p>
+<h2 id="org-springframework-cloud-consul-discovery-ConsulServerList"><a href="#org-springframework-cloud-consul-discovery-ConsulServerList" class="headerlink" title="org.springframework.cloud.consul.discovery.ConsulServerList"></a>org.springframework.cloud.consul.discovery.ConsulServerList</h2></li>
+<li>这个类也挺没意思的，就是拿着 consul-api 去通过http 的方式去获取 consul 上的注册的服务列表，看下他的方法<ul>
+<li>getServers() 获取当前服务的所以实例信息</li>
+<li>transformResponse（） 转换返回报文</li>
+<li>createQueryParamsForClientRequest（） 创建查询条件<h1 id="SpringCloud-Consul-Config"><a href="#SpringCloud-Consul-Config" class="headerlink" title="SpringCloud Consul Config"></a>SpringCloud Consul Config</h1><h2 id="spring-factories-1"><a href="#spring-factories-1" class="headerlink" title="spring.factories"></a>spring.factories</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Auto Configuration</span><br><span class="line">org.springframework.boot.autoconfigure.EnableAutoConfiguration=\</span><br><span class="line">org.springframework.cloud.consul.config.ConsulConfigAutoConfiguration</span><br><span class="line"># Bootstrap Configuration</span><br><span class="line">org.springframework.cloud.bootstrap.BootstrapConfiguration=\</span><br><span class="line">org.springframework.cloud.consul.config.ConsulConfigBootstrapConfiguration</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties</span></span><br><span class="line"><span class="meta">@ConditionalOnClass</span>(&#123;ConsulDiscoveryProperties.class, ConsulClient.class, ConfigServerProperties.class&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsulConfigServerAutoConfiguration</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span>(</span><br><span class="line">        required = <span class="keyword">false</span></span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">private</span> ConsulDiscoveryProperties properties;</span><br><span class="line">    <span class="meta">@Autowired</span>(</span><br><span class="line">        required = <span class="keyword">false</span></span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">private</span> ConfigServerProperties server; </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConsulConfigServerAutoConfiguration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.properties != <span class="keyword">null</span> &amp;&amp; <span class="keyword">this</span>.server != <span class="keyword">null</span>) &#123;</span><br><span class="line">            String prefix = <span class="keyword">this</span>.server.getPrefix();</span><br><span class="line">            <span class="keyword">if</span> (StringUtils.hasText(prefix)) &#123;</span><br><span class="line">                <span class="keyword">this</span>.properties.getTags().add(<span class="string">"configPath="</span> + prefix);<span class="comment">// 向里面添加了一个configPath</span></span><br><span class="line">                <span class="comment">//这个profix 对应spring.cloud.consul.config.prefix 默认就是一个config ，应该是标识，去consul 取配置的时候，记得带上前缀 </span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="org-springframework-cloud-consul-config-ConfigWatch"><a href="#org-springframework-cloud-consul-config-ConfigWatch" class="headerlink" title="org.springframework.cloud.consul.config.ConfigWatch"></a>org.springframework.cloud.consul.config.ConfigWatch</h2><ul>
+<li>顾名思义，应该是监视config 的变化,看看代码<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigWatch</span> <span class="keyword">implements</span> <span class="title">ApplicationEventPublisherAware</span>, <span class="title">SmartLifecycle</span> </span></span><br><span class="line"><span class="class"><span class="title">ApplicationEventPublisherAware</span>  实现这个接口应该就会有事件发布相关之类的功能</span></span><br><span class="line"><span class="class"><span class="title">Phased</span> 具有阶段性，比如第一阶段，第二阶段等</span></span><br><span class="line"><span class="class"><span class="title">Lifecycle</span> 具有一些启停操作</span></span><br><span class="line"><span class="class">    <span class="title">SmartLifecycle</span></span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">   	<span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">this</span>.running.compareAndSet(<span class="keyword">false</span>, <span class="keyword">true</span>)) &#123;</span><br><span class="line">		<span class="keyword">this</span>.watchFuture = <span class="keyword">this</span>.taskScheduler.scheduleWithFixedDelay(<span class="keyword">this</span>::watchConfigKeyValues,</span><br><span class="line">                   <span class="keyword">this</span>.properties.getWatch().getDelay());</span><br><span class="line">                    <span class="comment">//scheduleWithFixedDelay() 在此类的构造方法中创建了任务线程池，这个东西就是设置任务和，任务的间隔执行时间</span></span><br><span class="line"></span><br><span class="line">                  <span class="comment">// this.properties.getWatch().getDelay()  可以通过spring.cloud.consul.config.watch.delay 来指定的 默认1000</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>看下 <code>watchConfigKeyValues（）</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Timed</span>(value =<span class="string">"consul.watch-config-keys"</span>) <span class="comment">//这个地方应该是监视的keys</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">watchConfigKeyValues</span><span class="params">()</span> </span>&#123; <span class="comment">// 这个方法应该是，利用别的框架，去监视key的变化，如果有变化，就把kv更新下来，然后对比kv的版本，如果版本不一致，就更新本地</span></span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.running.get()) &#123;</span><br><span class="line">			<span class="keyword">for</span> (String context : <span class="keyword">this</span>.consulIndexes.keySet()) &#123;</span><br><span class="line"></span><br><span class="line">				<span class="comment">// turn the context into a Consul folder path (unless our config format are FILES)</span></span><br><span class="line">				<span class="keyword">if</span> (properties.getFormat() != FILES &amp;&amp; !context.endsWith(<span class="string">"/"</span>)) &#123;</span><br><span class="line">					context = context + <span class="string">"/"</span>;</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">try</span> &#123;</span><br><span class="line">					Long currentIndex = <span class="keyword">this</span>.consulIndexes.get(context);</span><br><span class="line">					<span class="keyword">if</span> (currentIndex == <span class="keyword">null</span>) &#123;</span><br><span class="line">						currentIndex = -<span class="number">1L</span>;</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">					log.trace(<span class="string">"watching consul for context '"</span>+context+<span class="string">"' with index "</span>+ currentIndex);</span><br><span class="line"></span><br><span class="line">					<span class="comment">// use the consul ACL token if found</span></span><br><span class="line">					String aclToken = properties.getAclToken();</span><br><span class="line">					<span class="keyword">if</span> (StringUtils.isEmpty(aclToken)) &#123;</span><br><span class="line">					    aclToken = <span class="keyword">null</span>;</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">					Response&lt;List&lt;GetValue&gt;&gt; response = <span class="keyword">this</span>.consul.getKVValues(context, aclToken,</span><br><span class="line">							<span class="keyword">new</span> QueryParams(<span class="keyword">this</span>.properties.getWatch().getWaitTime(),</span><br><span class="line">									currentIndex));</span><br><span class="line"></span><br><span class="line">					<span class="comment">// if response.value == null, response was a 404, otherwise it was a 200</span></span><br><span class="line">					<span class="comment">// reducing churn if there wasn't anything</span></span><br><span class="line">					<span class="keyword">if</span> (response.getValue() != <span class="keyword">null</span> &amp;&amp; !response.getValue().isEmpty()) &#123;</span><br><span class="line">						Long newIndex = response.getConsulIndex();</span><br><span class="line"></span><br><span class="line">						<span class="keyword">if</span> (newIndex != <span class="keyword">null</span> &amp;&amp; !newIndex.equals(currentIndex)) &#123;</span><br><span class="line">							<span class="comment">// don't publish the same index again, don't publish the first time (-1) so index can be primed</span></span><br><span class="line">							<span class="keyword">if</span> (!<span class="keyword">this</span>.consulIndexes.containsValue(newIndex) &amp;&amp; !currentIndex.equals(-<span class="number">1L</span>)) &#123;</span><br><span class="line">								log.trace(<span class="string">"Context "</span>+context + <span class="string">" has new index "</span> + newIndex);</span><br><span class="line">								RefreshEventData data = <span class="keyword">new</span> RefreshEventData(context, currentIndex, newIndex);</span><br><span class="line">								<span class="keyword">this</span>.publisher.publishEvent(<span class="keyword">new</span> RefreshEvent(<span class="keyword">this</span>, data, data.toString()));</span><br><span class="line">							&#125; <span class="keyword">else</span> <span class="keyword">if</span> (log.isTraceEnabled()) &#123;</span><br><span class="line">								log.trace(<span class="string">"Event for index already published for context "</span>+context);</span><br><span class="line">							&#125;</span><br><span class="line">							<span class="keyword">this</span>.consulIndexes.put(context, newIndex);</span><br><span class="line">						&#125; <span class="keyword">else</span> <span class="keyword">if</span> (log.isTraceEnabled()) &#123;</span><br><span class="line">							log.trace(<span class="string">"Same index for context "</span>+context);</span><br><span class="line">						&#125;</span><br><span class="line">					&#125; <span class="keyword">else</span> <span class="keyword">if</span> (log.isTraceEnabled()) &#123;</span><br><span class="line">						log.trace(<span class="string">"No value for context "</span>+context);</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">				&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">					<span class="comment">// only fail fast on the initial query, otherwise just log the error</span></span><br><span class="line">					<span class="keyword">if</span> (firstTime &amp;&amp; <span class="keyword">this</span>.properties.isFailFast()) &#123;</span><br><span class="line">						log.error(<span class="string">"Fail fast is set and there was an error reading configuration from consul."</span>);</span><br><span class="line">						ReflectionUtils.rethrowRuntimeException(e);</span><br><span class="line">					&#125; <span class="keyword">else</span> <span class="keyword">if</span> (log.isTraceEnabled()) &#123;</span><br><span class="line">						log.trace(<span class="string">"Error querying consul Key/Values for context '"</span> + context + <span class="string">"'"</span>, e);</span><br><span class="line">					&#125; <span class="keyword">else</span> <span class="keyword">if</span> (log.isWarnEnabled()) &#123;</span><br><span class="line">						<span class="comment">// simplified one line log message in the event of an agent failure</span></span><br><span class="line">						log.warn(<span class="string">"Error querying consul Key/Values for context '"</span> + context + <span class="string">"'. Message: "</span> + e.getMessage());</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		firstTime = <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解释下这里的刷新机制<br>watchConfigKeyValues 方法默认每秒调度一次，然后呢，通过consulCliet 去获取最新的kv ，然后呢，拿下来的kv 有一个consulIndex 类似版本号的东西，如果发生更新版本号就变化了，然后就更新实时更新了，就是这么简单</p>
+<h1 id="使用springcloud-consul-遇到的问题"><a href="#使用springcloud-consul-遇到的问题" class="headerlink" title="使用springcloud consul 遇到的问题"></a>使用springcloud consul 遇到的问题</h1><h2 id="端口问题"><a href="#端口问题" class="headerlink" title="端口问题"></a>端口问题</h2><p>consul 他的每个instance 是通过 service-name + port 区别的，也就是说一个serviceName+port 就等于一个instaceId，所以说相同服务名，端口一定不能一样，不然后注册的会把先注册的踢掉，然后踢掉之后的那个服务，他的健康检查就一直报错</p>
+<h2 id="版本问题"><a href="#版本问题" class="headerlink" title="版本问题"></a>版本问题</h2><p>建议使用springcloud consul 2.0 或者更高版本，如果使用1.0 有可能会出现心跳检查的时候问题，这个时候提供两种方案</p>
+</li>
+<li>升级springcloud consul 版本</li>
+<li>重写consulhealthIndictor ，吧2.0 的这个类，粘贴覆盖到你的工程中<h2 id="consul-api的问题"><a href="#consul-api的问题" class="headerlink" title="consul-api的问题"></a>consul-api的问题</h2>consul 1.0 之后将一些http接口从get 请求改为了put请求，这个bug 在consul-api1.3中解决<h2 id="日志不完整"><a href="#日志不完整" class="headerlink" title="日志不完整"></a>日志不完整</h2>springcloud consul 可能在老的版本中，对异常的处理，或者日志信息的打印存在着不足，就上述看的类中，就有存在，不过以后可能会被修复<h1 id="over-！"><a href="#over-！" class="headerlink" title="over ！"></a>over ！</h1>springcloud consul 到这里差不多没啥了，企业用springcloud 无非就是做配置中心，当然如果脑残的企业可能也会用config，上面就是我的心得，希望和大家分享，以后有时间，我回去看看consul server 的代码，看看注册中心是怎么去设计，怎么去工作的</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">springcloud consul 注册中心 consul-client</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/01/12/spring-cloud-consul解析/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-SpringCloud-ZipKin-使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/10/SpringCloud-ZipKin-使用/">SpringCloud ZipKin 使用</a>
+    </h1>
+  
+
+        
+        <a href="/2020/01/10/SpringCloud-ZipKin-使用/" class="archive-article-date">
+  	<time datetime="2020-01-10T07:07:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>对分布式系统做压力测试时候，需要了解交易在每一个微服务耗费的时间，根据时间去优化对应的服务，这个时候就用到了<code>ZipKin</code>这篇文章仅仅是去记录如何去使用Zipkin</p>
+<h1 id="引入maven依赖"><a href="#引入maven依赖" class="headerlink" title="引入maven依赖"></a>引入maven依赖</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-zipkin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-sleuth<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-sleuth-zipkin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><h2 id="springboot-配置文件-application-yml-properties-bootstrap-yml-properties"><a href="#springboot-配置文件-application-yml-properties-bootstrap-yml-properties" class="headerlink" title="springboot 配置文件 application.yml/properties/bootstrap.yml/properties"></a>springboot 配置文件 application.yml/properties/bootstrap.yml/properties</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8081</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: admin-service-provider</span><br><span class="line">  zipkin:</span><br><span class="line">    enabled: true</span><br><span class="line">    base-url: #zipkin server 的地址</span><br><span class="line">    service: #服务名字</span><br><span class="line">      name: </span><br><span class="line">  sleuth:</span><br><span class="line">    enabled: true</span><br><span class="line">    sampler:</span><br><span class="line">      probability: 1.0</span><br><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    service-url:</span><br><span class="line">        defaultZone: http://localhost:8080/eureka</span><br><span class="line">  instance:</span><br><span class="line">    prefer-ip-address: true</span><br><span class="line">``` </span><br><span class="line">## log4j2.xml </span><br><span class="line">```xml</span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;Configuration monitorInterval=&quot;10&quot;&gt;</span><br><span class="line">	&lt;Properties&gt;</span><br><span class="line">		&lt;Property name=&quot;app.home&quot;&gt;$&#123;sys:APPHOME&#125;&lt;/Property&gt;</span><br><span class="line">		&lt;Property name=&quot;LOG_PATTERN&quot;&gt;%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; %-5level[%t][%X&#123;X-B3-TraceId&#125;,%X&#123;X-B3-SpanId&#125;,%X&#123;X-B3-ParentSpanId&#125;,%X&#123;X-Span-Export&#125;] %class&#123;36&#125; %M() %L %msg%xEx%n&lt;/Property&gt;</span><br><span class="line">	&lt;/Properties&gt;</span><br><span class="line">	&lt;Appenders&gt;</span><br><span class="line">		&lt;RollingFile name=&quot;sunline&quot; fileName=&quot;$&#123;sys:app.home&#125;/logs/$&#123;sys:artifact.id&#125;-$&#123;sys:version&#125;-$&#123;sys:process.id&#125;.log&quot;</span><br><span class="line">			filePattern=&quot;$&#123;sys:app.home&#125;/logs/hislog/$&#123;sys:artifact.id&#125;-$&#123;sys:version&#125;-$&#123;sys:process.id&#125;-sl.%d&#123;yyyy-MM-dd&#125;.log.gz&quot;&gt;</span><br><span class="line">			&lt;ThresholdFilter level=&quot;TRACE&quot; onMatch=&quot;ACCEPT&quot; onMismatch=&quot;DENY&quot; /&gt;</span><br><span class="line">			&lt;!-- 日志输出样式 --&gt;</span><br><span class="line">			&lt;PatternLayout pattern=&quot;$&#123;LOG_PATTERN&#125;&quot; /&gt;</span><br><span class="line">			&lt;Policies&gt;</span><br><span class="line">				&lt;!-- 根据时间滚动的策略,1-每一个%d&#123;yyyy-MM-dd&#125;单位 --&gt;</span><br><span class="line">				&lt;TimeBasedTriggeringPolicy interval=&quot;1&quot; /&gt;</span><br><span class="line">				&lt;!-- 大小滚动策略 --&gt;</span><br><span class="line">				&lt;!-- &lt;SizeBasedTriggeringPolicy size=&quot;10 MB&quot; /&gt; --&gt;</span><br><span class="line">			&lt;/Policies&gt;</span><br><span class="line">			&lt;!-- 滚动日志保存个数 --&gt;</span><br><span class="line">			&lt;DefaultRolloverStrategy max=&quot;20&quot; /&gt;</span><br><span class="line">		&lt;/RollingFile&gt;</span><br><span class="line">		&lt;RollingFile name=&quot;others&quot; fileName=&quot;$&#123;sys:app.home&#125;/logs/$&#123;sys:artifact.id&#125;-$&#123;sys:version&#125;-$&#123;sys:process.id&#125;-os.log&quot;</span><br><span class="line">			filePattern=&quot;$&#123;sys:app.home&#125;/logs/hislog/$&#123;sys:artifact.id&#125;-$&#123;sys:version&#125;-$&#123;sys:process.id&#125;-os.%d&#123;yyyy-MM-dd&#125;.log.gz&quot;&gt;</span><br><span class="line">			&lt;ThresholdFilter level=&quot;TRACE&quot; onMatch=&quot;ACCEPT&quot; onMismatch=&quot;DENY&quot; /&gt;</span><br><span class="line">			&lt;!-- 日志输出样式 --&gt;</span><br><span class="line">			&lt;PatternLayout pattern=&quot;$&#123;LOG_PATTERN&#125;&quot; /&gt;</span><br><span class="line">			&lt;Policies&gt;</span><br><span class="line">				&lt;!-- 根据时间滚动的策略,1-每一个%d&#123;yyyy-MM-dd&#125;单位 --&gt;</span><br><span class="line">				&lt;TimeBasedTriggeringPolicy interval=&quot;1&quot; /&gt;</span><br><span class="line">				&lt;!-- 大小滚动策略 --&gt;</span><br><span class="line">				&lt;!-- &lt;SizeBasedTriggeringPolicy size=&quot;10 MB&quot; /&gt; --&gt;</span><br><span class="line">			&lt;/Policies&gt;</span><br><span class="line">			&lt;!-- 滚动日志保存个数 --&gt;</span><br><span class="line">			&lt;DefaultRolloverStrategy max=&quot;20&quot; /&gt;</span><br><span class="line">		&lt;/RollingFile&gt;</span><br><span class="line">	&lt;/Appenders&gt;</span><br><span class="line">	&lt;loggers&gt;</span><br><span class="line">		&lt;root level=&quot;INFO&quot;&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">		&lt;/root&gt;</span><br><span class="line">		&lt;!-- sunline --&gt;</span><br><span class="line">		&lt;logger name=&quot;cn.sunline&quot; level=&quot;WARN&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">		&lt;/logger&gt;</span><br><span class="line">		&lt;!-- rpc-producer --&gt;</span><br><span class="line">		&lt;logger name=&quot;cn.sunline.rpc.eureka.producer&quot; level=&quot;ERROR&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">		        &lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">		&lt;/logger&gt;</span><br><span class="line">		&lt;!-- rpc-consumer --&gt;</span><br><span class="line">		&lt;logger name=&quot;cn.sunline.rpc.eureka.consumer&quot; level=&quot;ERROR&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">		        &lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">		&lt;/logger&gt;</span><br><span class="line">                &lt;logger name=&quot;com.ec&quot; level=&quot;warn&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">                        &lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">                &lt;/logger&gt;</span><br><span class="line">		&lt;!-- spring --&gt;</span><br><span class="line">		&lt;logger name=&quot;org.springframework&quot; level=&quot;ERROR&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">		&lt;/logger&gt;</span><br><span class="line">		&lt;!-- hibernate-显示sql --&gt;</span><br><span class="line">		&lt;logger name=&quot;org.hibernate.SQL&quot; level=&quot;WARN&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">		&lt;/logger&gt;</span><br><span class="line">		&lt;!-- hibernate-显示参数 --&gt;</span><br><span class="line">		&lt;logger name=&quot;org.hibernate.type&quot; level=&quot;ERROR&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">		&lt;/logger&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                &lt;logger name=&quot;cn.sunline.ccs.service.sdk.QueryServiceWrapper&quot; level=&quot;INFO&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">                        &lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">                &lt;/logger&gt;</span><br><span class="line"></span><br><span class="line">                &lt;logger name=&quot;cn.sunline.fms.service.utils.GetBizDateByCache&quot; level=&quot;INFO&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">                        &lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">                &lt;/logger&gt;</span><br><span class="line"></span><br><span class="line">                &lt;logger name=&quot;cn.sunline.ccs.service.controller.QueryServiceController&quot; level=&quot;INFO&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">                        &lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">                &lt;/logger&gt;</span><br><span class="line">		&lt;!-- 工作流 --&gt;</span><br><span class="line">		&lt;logger name=&quot;org.activiti&quot; level=&quot;INFO&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">		&lt;/logger&gt;</span><br><span class="line">		&lt;!-- 规则引擎 --&gt;</span><br><span class="line">		&lt;logger name=&quot;org.drools&quot; level=&quot;ERROR&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">			&lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">		&lt;/logger&gt;</span><br><span class="line">		&lt;logger name=&quot;cn.sunline.rpc.eureka.cunsumer.EurekaClientBeanRegister&quot; level=&quot;warn&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">                        &lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">                &lt;/logger&gt;</span><br><span class="line">		&lt;logger name=&quot;cn.sunline.common.DynamicHardCodedTarget&quot; level=&quot;warn&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">                        &lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">                &lt;/logger&gt;</span><br><span class="line">		&lt;logger name=&quot;cn.sunline.gns.service.impl.GnsServiceImpl&quot; level=&quot;warn&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">                        &lt;appender-ref ref=&quot;sunline&quot; /&gt;</span><br><span class="line">                &lt;/logger&gt;</span><br><span class="line">	&lt;/loggers&gt;</span><br><span class="line">&lt;/Configuration&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="下载zipKin-server"><a href="#下载zipKin-server" class="headerlink" title="下载zipKin server"></a>下载zipKin server</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sSL https://zipkin.io/quickstart.sh | bash -s io.zipkin:zipkin-server:LATEST:slim zipkin.jar</span><br><span class="line">java -jar zipkin.jar</span><br></pre></td></tr></table></figure>
+<h1 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h1><p> 启动之后，发交易，这个时候在zipkin server 上就能够显示出来链路</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">springcloud spring 链路追踪 链路监控</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/01/10/SpringCloud-ZipKin-使用/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-hadoop版本选择伪分布式安装" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/08/hadoop版本选择伪分布式安装/">hadoop版本选择伪分布式安装</a>
+    </h1>
+  
+
+        
+        <a href="/2020/01/08/hadoop版本选择伪分布式安装/" class="archive-article-date">
+  	<time datetime="2020-01-08T09:12:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="版本选择"><a href="#版本选择" class="headerlink" title="版本选择"></a>版本选择</h1><h2 id="1-x，2-x的区别"><a href="#1-x，2-x的区别" class="headerlink" title="1.x，2.x的区别"></a>1.x，2.x的区别</h2><ul>
+<li><strong>从mapreduce角度看</strong><ul>
+<li>2.0相比于1.0 新增了YARN框架，Mapreduce的运行环境发生了变化</li>
+<li>在1.0中：由一个JobTracker和若干个TaskTracker两类服务组成，其中JobTracker负责资源管理和所有作业的控制，TaskTracker负责接收来自JobTracker的命令并执行它。所以MapReduce即是任务调度框架又是计算框架，1.0中会出现JobTracker大包大揽任务过重，而且存在单点故障问题，并且容易出现OOM问题，资源分配不合理等问题。</li>
+<li>在2.0中：MASTER端由ResourceManager进行资源管理调度，有ApplicationMaster进行任务管理和任务监控。SLAVE端由NodeManager替代TaskTracker进行具体任务的执行，所以MapReduce2.0只是一个计算框架，具体资源调度全部交给Yarn框架。</li>
+</ul>
+</li>
+<li><strong>从HDFS角度来看</strong><ul>
+<li>Hadoop2.x新增了HDFS HA机制，HA增加了standbynamenode进行热备份，解决了1.0的单点故障问题 （2.4增加HA）（2.4.1 Yarn也实现了高可用）</li>
+<li>Hadoop2.0新增了HDFS federation，解决了HDFS水平可扩展能力<h2 id="3-x-与之前区别"><a href="#3-x-与之前区别" class="headerlink" title="3.x 与之前区别"></a>3.x 与之前区别</h2></li>
+</ul>
+</li>
+<li><strong>Java运行环境升级为1.8</strong></li>
+<li><strong>HDFS支持纠删码</strong><ul>
+<li>纠删码相比于副本机制节省了一半以上的存储空间，普通副本机制需要3倍存储空间而这种机制只需1.4倍即可</li>
+</ul>
+</li>
+<li><strong>YARN时间线服务</strong></li>
+<li><strong>支持多余2个以上的NameNodes</strong><ul>
+<li>3.0支持单active namenode+多standby namenode部署方式进一步提升了可用性</li>
+</ul>
+</li>
+<li><strong>MapReduce本地优化，性能提升了30%。</strong><ul>
+<li>最后相比于1.0和2.0，3.0在实际使用过程中比较不稳定。<h2 id="商业版本与开源版本"><a href="#商业版本与开源版本" class="headerlink" title="商业版本与开源版本"></a>商业版本与开源版本</h2><a href="https://www.cnblogs.com/adnb34g/p/9626097.html" target="_blank" rel="noopener">https://www.cnblogs.com/adnb34g/p/9626097.html</a></li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">hadoop hadoop伪分布式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/01/08/hadoop版本选择伪分布式安装/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-springcloud-Ribbon笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -292,7 +603,20 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="怎么解决海量数据存储？"><a href="#怎么解决海量数据存储？" class="headerlink" title="怎么解决海量数据存储？"></a>怎么解决海量数据存储？</h1>
+        <h1 id="怎么解决海量数据存储？"><a href="#怎么解决海量数据存储？" class="headerlink" title="怎么解决海量数据存储？"></a>怎么解决海量数据存储？</h1><ul>
+<li>之前<code>nfs</code>使用磁盘共享，但是在应用场景复杂的情况下，<code>nfs</code>还是显得的比较low，比如高可用，数据一致，性能等<h2 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h2>使用<code>HDFS</code> 做分布式海量数据存储</li>
+<li>分布式： 数据散落在集群中各个节点上</li>
+<li>高可用：个个节点有备份节点，备份数据，<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3></li>
+<li><code>HDFS</code>存储数据的叫做<code>dataNode</code>，提供对切分之后数据的存储和读操作，</li>
+<li>对外访问的路径，要和对内dataNode上的数据片对应起来，这个时候就有一个记录真实数据路径和对外访问路径的映射关系，这个是有一个角色<code>NameNode</code>来统一管理<h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2></li>
+<li>先对数据进行Map操作，把计算拆分成小份，然后多个进程，线程同时并行/并发计算</li>
+<li>然后进行reduce 操作，吧所有线程/进程 计算出的结果进行汇总<h2 id="Hadoop-特点"><a href="#Hadoop-特点" class="headerlink" title="Hadoop 特点"></a>Hadoop 特点</h2></li>
+<li>扩容能力： 能可靠地存储处理千兆字节的数据(PB)</li>
+<li>成本低： 可以通过普通的机器来进行分发处理数据</li>
+<li>高效率： 通过分发数据，hadoop可以在数据所处的节点上并行的处理他们，这使得处理是非常快速的</li>
+<li>可靠性： hadoop自动维护多份副本，并在任务失败后自动的重新部署计算任务</li>
+</ul>
+
       
 
       
@@ -690,264 +1014,6 @@
 
 
   
-    <article id="post-spring-cloud-gateway-webflux-冲突问题解决" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/25/spring-cloud-gateway-webflux-冲突问题解决/">spring-cloud gateway webflux 冲突问题解决</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/25/spring-cloud-gateway-webflux-冲突问题解决/" class="archive-article-date">
-  	<time datetime="2019-12-25T02:59:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="1-异常信息"><a href="#1-异常信息" class="headerlink" title="1. 异常信息"></a>1. 异常信息</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">***************************</span><br><span class="line">APPLICATION FAILED TO START</span><br><span class="line">***************************</span><br><span class="line"></span><br><span class="line">Description:</span><br><span class="line"></span><br><span class="line">Parameter <span class="number">0</span> of method modifyResponseBodyGatewayFilterFactory in org.springframework.cloud.gateway.config.GatewayAutoConfiguration required a bean of type <span class="string">'org.springframework.http.codec.ServerCodecConfigurer'</span> that could not be found.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Action:</span><br><span class="line"></span><br><span class="line">Consider defining a bean of type <span class="string">'org.springframework.http.codec.ServerCodecConfigurer'</span> in your configuration.</span><br></pre></td></tr></table></figure>
-<h1 id="2-原因"><a href="#2-原因" class="headerlink" title="2. 原因"></a>2. 原因</h1><p>依赖冲突，spring-cloud-starter-gateway与spring-boot-starter-web和spring-boot-starter-webflux依赖冲突</p>
-<h1 id="3-解决办法"><a href="#3-解决办法" class="headerlink" title="3. 解决办法"></a>3. 解决办法</h1><ul>
-<li>干掉<code>springboot-starter-web</code>的依赖</li>
-<li>从<code>spring-cloud-starter-gateway</code> 中排除<code>spring-boot-starter-webflux</code> 依赖</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">spring springboot springcloud webFlux 包冲突</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/12/25/spring-cloud-gateway-webflux-冲突问题解决/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-redis-cluster-搭建和使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/24/redis-cluster-搭建和使用/">redis cluster 搭建和使用</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/24/redis-cluster-搭建和使用/" class="archive-article-date">
-  	<time datetime="2019-12-24T06:53:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h1><p>记录下搭建redis 的过程方便以后使用</p>
-<h1 id="2-redis-单节点的安装"><a href="#2-redis-单节点的安装" class="headerlink" title="2. redis 单节点的安装"></a>2. redis 单节点的安装</h1><ul>
-<li><p>去官网下载<strong>最新稳定版</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.redis.io/releases/redis-5.0.7.tar.gz</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>解压</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf redis-5.0.7.tar.gz</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>编译安装</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make &amp;&amp; make test &amp;&amp; make install</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>等一会。。。</p>
-</li>
-<li><p>配置相关配置文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/redis-5.0.7/utils/</span><br><span class="line">ls -l </span><br><span class="line">cp redis_init_script  /etc/init.d/redis_6379 # 通过此文件启动</span><br><span class="line">mkdir -p /etc/redis # 存放配置文件</span><br><span class="line">mkdir -p /var/redis/6379 #存放持久化文件</span><br><span class="line">cp /usr/local/redis-5.0.7/redis.conf  6379.conf</span><br><span class="line">vi 6379.conf</span><br><span class="line">-------------------------------------------------------------</span><br><span class="line">daemonize	yes							让redis以daemon进程运行</span><br><span class="line">pidfile		/var/run/redis_6379.pid 	设置redis的pid文件位置</span><br><span class="line">port		6379						设置redis的监听端口号</span><br><span class="line">dir 		/var/redis/6379				设置持久化文件的存储位置</span><br><span class="line">requirepass redis123                    设置连接口令</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>让redis 随着系统启动启动,在redis 启动脚本前加几行代码</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    # chkconfig:   2345 90 10</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> description:  Redis is a persistent key-value database</span><br><span class="line"></span><br><span class="line">chkconfig redis_6379 on</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="3-redis-cluster-安装"><a href="#3-redis-cluster-安装" class="headerlink" title="3. redis cluster 安装"></a>3. redis cluster 安装</h1><h2 id="3-1-规划下服务器"><a href="#3-1-规划下服务器" class="headerlink" title="3.1 规划下服务器"></a>3.1 规划下服务器</h2><p>10.10.200.66   —&gt; 7001(redis-node1) 7002(redis-node2) </p>
-<p>10.10.200.125   —&gt; 7001(redis-node3) 7002(redis-node4)</p>
-<p>10.10.200.128   —-&gt;7001(redis-node5)  7002(redis-node6)</p>
-<h2 id="3-2-修改配置文件"><a href="#3-2-修改配置文件" class="headerlink" title="3.2 修改配置文件"></a>3.2 修改配置文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">cp redis_6379 redis_7001 </span><br><span class="line">cp redis_6379 redis_7002</span><br><span class="line">vi redis_7001 # 吧对应的6379 改成7001</span><br><span class="line">vi redis_7002 # 吧对应的6379 改成7002</span><br><span class="line"></span><br><span class="line">cd /etc/redis</span><br><span class="line">cp 6379.conf 7001.conf</span><br><span class="line">cp 6379.conf 7002.conf</span><br><span class="line"></span><br><span class="line">vi 7001.conf # 修改配置文件</span><br><span class="line">-------------------------------------------</span><br><span class="line">port 7001 </span><br><span class="line">cluster-enable yes </span><br><span class="line">cluster-config-file /etc/redis-cluster/nodes-7001.conf</span><br><span class="line">cluster-node-timeout 15000</span><br><span class="line">appendonly yes</span><br><span class="line">daemonize yes</span><br><span class="line">protected-mode no</span><br><span class="line">pidfile  /var/run/redis_7001.pid</span><br></pre></td></tr></table></figure>
-<h2 id="3-3-启动每一个redis-节点"><a href="#3-3-启动每一个redis-节点" class="headerlink" title="3.3  启动每一个redis 节点"></a>3.3  启动每一个redis 节点</h2><p>./redis_7001 start<br>….</p>
-<h2 id="3-4-创建三主三从读写分离的分布式redis-集群"><a href="#3-4-创建三主三从读写分离的分布式redis-集群" class="headerlink" title="3.4 创建三主三从读写分离的分布式redis 集群"></a>3.4 创建三主三从读写分离的分布式redis 集群</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli --cluster create 10.10.200.66:7001 10.10.200.66:7002 10.10.200.125:7001 10.10.200.125:7002 10.10.200.128:7001 10.10.200.128:7002 --cluster-replicas 1 -a redis123</span><br></pre></td></tr></table></figure>
-<p>然后就ok了</p>
-<h1 id="4-java-使用redis-cluster"><a href="#4-java-使用redis-cluster" class="headerlink" title="4. java 使用redis cluster"></a>4. java 使用redis cluster</h1><ul>
-<li>使用springboot 初始化器，创建一个springboot项目</li>
-<li><p>引入jar包</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  	<span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>编写main</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">package</span> cn.sunline.springbootrediscluster;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.AutoConfigureAfter;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.RedisConnectionFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.jedis.JedisConnectionFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.RedisTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.serializer.StringRedisSerializer;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.client.RestTemplate;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>  zzq</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@AutoConfigureAfter</span>(RedisAutoConfiguration.class)</span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span>    <span class="title">SpringbootRedisClusterApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(SpringbootRedisClusterApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedisTemplate <span class="title">redisTemplate</span><span class="params">(LettuceConnectionFactory redisConnectionFactory)</span></span>&#123;</span><br><span class="line">        RedisTemplate redisTemplate = <span class="keyword">new</span> RedisTemplate();</span><br><span class="line">        redisTemplate.setKeySerializer(<span class="keyword">new</span> StringRedisSerializer());</span><br><span class="line">        redisTemplate.setValueSerializer(<span class="keyword">new</span> StringRedisSerializer());</span><br><span class="line">        redisTemplate.setConnectionFactory(redisConnectionFactory);</span><br><span class="line">        <span class="keyword">return</span> redisTemplate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>编写测试controller</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sunline.springbootrediscluster.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.redis.core.RedisTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestBody;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> zzq</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisHelloController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    RedisTemplate&lt;String, Object&gt;    redisTemplate;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"set"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span>  <span class="title">set</span> <span class="params">(String key,String val)</span></span>&#123;</span><br><span class="line">        redisTemplate.opsForValue().set(key, val);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"get"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object  <span class="title">get</span> <span class="params">(String key)</span></span>&#123;</span><br><span class="line">      <span class="keyword">return</span>   redisTemplate.opsForValue().get(key);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="5-对redis-cluster-进行压测，使用redis-自带的压测工具"><a href="#5-对redis-cluster-进行压测，使用redis-自带的压测工具" class="headerlink" title="5. 对redis cluster 进行压测，使用redis 自带的压测工具"></a>5. 对redis cluster 进行压测，使用redis 自带的压测工具</h1><ul>
-<li>redis 自带一个工具  redis-benchmark </li>
-<li>参考别人的博客吧<br><a href="https://blog.csdn.net/AlbertFly/article/details/80083461" target="_blank" rel="noopener">https://blog.csdn.net/AlbertFly/article/details/80083461</a></li>
-</ul>
-<p>以后介绍下，redis 的通讯，容灾，灾难演练等等</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">redis rediscluster 缓存 java springcloud jedis</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/12/24/redis-cluster-搭建和使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-混沌测试及理论实现" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/23/混沌测试及理论实现/">混沌测试及理论实现</a>
-    </h1>
-  
-
-        
-        <a href="/2019/12/23/混沌测试及理论实现/" class="archive-article-date">
-  	<time datetime="2019-12-23T02:06:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/12/23/混沌测试及理论实现/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1053,11 +1119,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
+                <a href="javascript:void(0)" class="js-tag color2">hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">springcloud spring 链路追踪 链路监控</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1069,7 +1135,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
+                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">hadoop hadoop伪分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1077,7 +1147,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">javascript form js jquery 前端</a>
+                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1089,15 +1159,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">redis rediscluster 缓存 java springcloud jedis</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">spring springboot springcloud webFlux 包冲突</a>
+                <a href="javascript:void(0)" class="js-tag color4">javascript form js jquery 前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">springcloud consul</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1105,7 +1179,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springcloud consul</a>
+                <a href="javascript:void(0)" class="js-tag color2">spring springboot springcloud webFlux 包冲突</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1134,6 +1208,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">集合框架  java.utils utils list List Map map HashMap hashmap ArrayList arraylist</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">springcloud consul 注册中心 consul-client</a>
               </li>
             
             <div class="clearfix"></div>

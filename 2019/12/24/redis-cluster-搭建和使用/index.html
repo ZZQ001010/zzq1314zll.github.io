@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="ZZQ的">
 <meta property="og:description" content="1. 概述记录下搭建redis 的过程方便以后使用 2. redis 单节点的安装 去官网下载最新稳定版 1wget http://download.redis.io/releases/redis-5.0.7.tar.gz  解压 1tar -zxvf redis-5.0.7.tar.gz  编译安装 1make &amp;amp;&amp;amp; make test &amp;amp;&amp;amp; make insta">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-24T07:33:52.276Z">
+<meta property="og:updated_time" content="2020-01-11T07:44:24.298Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis cluster 搭建和使用">
 <meta name="twitter:description" content="1. 概述记录下搭建redis 的过程方便以后使用 2. redis 单节点的安装 去官网下载最新稳定版 1wget http://download.redis.io/releases/redis-5.0.7.tar.gz  解压 1tar -zxvf redis-5.0.7.tar.gz  编译安装 1make &amp;amp;&amp;amp; make test &amp;amp;&amp;amp; make insta">
@@ -196,10 +196,10 @@
 <h1 id="3-redis-cluster-安装"><a href="#3-redis-cluster-安装" class="headerlink" title="3. redis cluster 安装"></a>3. redis cluster 安装</h1><h2 id="3-1-规划下服务器"><a href="#3-1-规划下服务器" class="headerlink" title="3.1 规划下服务器"></a>3.1 规划下服务器</h2><p>10.10.200.66   —&gt; 7001(redis-node1) 7002(redis-node2) </p>
 <p>10.10.200.125   —&gt; 7001(redis-node3) 7002(redis-node4)</p>
 <p>10.10.200.128   —-&gt;7001(redis-node5)  7002(redis-node6)</p>
-<h2 id="3-2-修改配置文件"><a href="#3-2-修改配置文件" class="headerlink" title="3.2 修改配置文件"></a>3.2 修改配置文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">cp redis_6379 redis_7001 </span><br><span class="line">cp redis_6379 redis_7002</span><br><span class="line">vi redis_7001 # 吧对应的6379 改成7001</span><br><span class="line">vi redis_7002 # 吧对应的6379 改成7002</span><br><span class="line"></span><br><span class="line">cd /etc/redis</span><br><span class="line">cp 6379.conf 7001.conf</span><br><span class="line">cp 6379.conf 7002.conf</span><br><span class="line"></span><br><span class="line">vi 7001.conf # 修改配置文件</span><br><span class="line">-------------------------------------------</span><br><span class="line">port 7001 </span><br><span class="line">cluster-enable yes </span><br><span class="line">cluster-config-file /etc/redis-cluster/nodes-7001.conf</span><br><span class="line">cluster-node-timeout 15000</span><br><span class="line">appendonly yes</span><br><span class="line">daemonize yes</span><br><span class="line">protected-mode no</span><br><span class="line">pidfile  /var/run/redis_7001.pid</span><br></pre></td></tr></table></figure>
+<h2 id="3-2-修改配置文件"><a href="#3-2-修改配置文件" class="headerlink" title="3.2 修改配置文件"></a>3.2 修改配置文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">cp redis_6379 redis_7001 </span><br><span class="line">cp redis_6379 redis_7002</span><br><span class="line">vi redis_7001 # 吧对应的6379 改成7001</span><br><span class="line">vi redis_7002 # 吧对应的6379 改成7002</span><br><span class="line"></span><br><span class="line">cd /etc/redis</span><br><span class="line">cp 6379.conf 7001.conf</span><br><span class="line">cp 6379.conf 7002.conf</span><br><span class="line"></span><br><span class="line">vi 7001.conf # 修改配置文件</span><br><span class="line">-------------------------------------------</span><br><span class="line">port 7001 </span><br><span class="line">cluster-enable yes </span><br><span class="line">cluster-config-file /etc/redis-cluster/nodes-7001.conf</span><br><span class="line">cluster-node-timeout 15000</span><br><span class="line">appendonly yes</span><br><span class="line">daemonize yes</span><br><span class="line">protected-mode no</span><br><span class="line">pidfile  /var/run/redis_7001.pid</span><br><span class="line">logfile "/var/log/redis/7001.log"</span><br><span class="line">loglevel notice</span><br><span class="line"><span class="meta">#</span> bind 127.0.0.1</span><br></pre></td></tr></table></figure>
 <h2 id="3-3-启动每一个redis-节点"><a href="#3-3-启动每一个redis-节点" class="headerlink" title="3.3  启动每一个redis 节点"></a>3.3  启动每一个redis 节点</h2><p>./redis_7001 start<br>….</p>
 <h2 id="3-4-创建三主三从读写分离的分布式redis-集群"><a href="#3-4-创建三主三从读写分离的分布式redis-集群" class="headerlink" title="3.4 创建三主三从读写分离的分布式redis 集群"></a>3.4 创建三主三从读写分离的分布式redis 集群</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli --cluster create 10.10.200.66:7001 10.10.200.66:7002 10.10.200.125:7001 10.10.200.125:7002 10.10.200.128:7001 10.10.200.128:7002 --cluster-replicas 1 -a redis123</span><br></pre></td></tr></table></figure>
-<p>然后就ok了</p>
+<h2 id="3-5-redis-cluster-的一些命令"><a href="#3-5-redis-cluster-的一些命令" class="headerlink" title="3.5 redis cluster 的一些命令"></a>3.5 redis cluster 的一些命令</h2><p><a href="https://blog.csdn.net/u011441473/article/details/88868905" target="_blank" rel="noopener">https://blog.csdn.net/u011441473/article/details/88868905</a><br>然后就ok了</p>
 <h1 id="4-java-使用redis-cluster"><a href="#4-java-使用redis-cluster" class="headerlink" title="4. java 使用redis cluster"></a>4. java 使用redis cluster</h1><ul>
 <li>使用springboot 初始化器，创建一个springboot项目</li>
 <li><p>引入jar包</p>
@@ -476,11 +476,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
+                <a href="javascript:void(0)" class="js-tag color2">hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">springcloud spring 链路追踪 链路监控</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -492,7 +492,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
+                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">hadoop hadoop伪分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -500,7 +504,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">javascript form js jquery 前端</a>
+                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -512,15 +516,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">redis rediscluster 缓存 java springcloud jedis</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">spring springboot springcloud webFlux 包冲突</a>
+                <a href="javascript:void(0)" class="js-tag color4">javascript form js jquery 前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">springcloud consul</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -528,7 +536,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springcloud consul</a>
+                <a href="javascript:void(0)" class="js-tag color2">spring springboot springcloud webFlux 包冲突</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -557,6 +565,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">集合框架  java.utils utils list List Map map HashMap hashmap ArrayList arraylist</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">springcloud consul 注册中心 consul-client</a>
               </li>
             
             <div class="clearfix"></div>
