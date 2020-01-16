@@ -703,6 +703,86 @@ http://ip:port/config-info/dev/master
 
 
   
+    <article id="post-基于“分发层”+“应用层”双层nginx架构提高命中率方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/">基于“分发层”+“应用层”双层nginx架构提高命中率方案</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/" class="archive-article-date">
+  	<time datetime="2019-05-19T12:17:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题发现"><a href="#问题发现" class="headerlink" title="问题发现"></a>问题发现</h2><p>在使用nginx 做缓存的时候就会发现,如果所有通过nginx 的请求返回结果都给缓存,这样数据量大的情况下,无法精准的对数据进行缓存,导致很多的数据缓存之后,又经过lru算法清除基于这个问题的出现,下面分析解决方案</p>
+<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>上述问题的主要原因就是,所有的数据都缓存在一台机器上,因此,一台机器接收所有的请求,然后进行缓存,lru算法清除,如果我们把数据分类,比如说,把商品的请求,都给放在A 机器上,店铺的请求放在B机器上,这样的话,请求都被分类,分为两小分,然后在前面做一个转发,通过判断类型把请求转发到对应的机器上,这样一台机器接收的请求少了,缓存的数据也就不容易过期,缓存的命中率也就高了</p>
+<ul>
+<li>实际情况我们是不会进行对请求分类的,因为这样的话实在是太麻烦了,因此我们根据某些特性,比如如果是电商的话,就根据商品id ,店铺id,订单id等,然后进行hash 取模运算(这个和redis 差不多)</li>
+</ul>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><ul>
+<li><p>在nginx 是可以支持lua脚本的,我们使用lua脚本,然后从注册中心,或者自己配置一个数组,获取所有的要转发的实例</p>
+</li>
+<li><p>然后根据id hash取模运算,对应到数组中的指定的一个槽(服务器)</p>
+</li>
+<li><p>然后对这个服务器进行请求,服务器会请求后台服务,然后缓存数据,这样缓存的数据就比较单一,<strong>这也叫数据的维度话</strong></p>
+</li>
+</ul>
+<h3 id="什么是lua"><a href="#什么是lua" class="headerlink" title="什么是lua"></a>什么是lua</h3><ul>
+<li>当你有这个疑问,你不是一个合格的程序员自己去官网看看</li>
+</ul>
+<p><a href="http://www.lua.org/" target="_blank" rel="noopener">http://www.lua.org/</a></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>代码就不写了,想法都有了,代码不是so easy</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-高并发场景下缓存-数据库双写不一致问题分析与解决方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -801,86 +881,6 @@ http://ip:port/config-info/dev/master
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/05/19/高并发场景下缓存-数据库双写不一致问题分析与解决方案/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-基于“分发层”+“应用层”双层nginx架构提高命中率方案" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/">基于“分发层”+“应用层”双层nginx架构提高命中率方案</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/" class="archive-article-date">
-  	<time datetime="2019-05-19T12:17:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="问题发现"><a href="#问题发现" class="headerlink" title="问题发现"></a>问题发现</h2><p>在使用nginx 做缓存的时候就会发现,如果所有通过nginx 的请求返回结果都给缓存,这样数据量大的情况下,无法精准的对数据进行缓存,导致很多的数据缓存之后,又经过lru算法清除基于这个问题的出现,下面分析解决方案</p>
-<h2 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h2><p>上述问题的主要原因就是,所有的数据都缓存在一台机器上,因此,一台机器接收所有的请求,然后进行缓存,lru算法清除,如果我们把数据分类,比如说,把商品的请求,都给放在A 机器上,店铺的请求放在B机器上,这样的话,请求都被分类,分为两小分,然后在前面做一个转发,通过判断类型把请求转发到对应的机器上,这样一台机器接收的请求少了,缓存的数据也就不容易过期,缓存的命中率也就高了</p>
-<ul>
-<li>实际情况我们是不会进行对请求分类的,因为这样的话实在是太麻烦了,因此我们根据某些特性,比如如果是电商的话,就根据商品id ,店铺id,订单id等,然后进行hash 取模运算(这个和redis 差不多)</li>
-</ul>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><ul>
-<li><p>在nginx 是可以支持lua脚本的,我们使用lua脚本,然后从注册中心,或者自己配置一个数组,获取所有的要转发的实例</p>
-</li>
-<li><p>然后根据id hash取模运算,对应到数组中的指定的一个槽(服务器)</p>
-</li>
-<li><p>然后对这个服务器进行请求,服务器会请求后台服务,然后缓存数据,这样缓存的数据就比较单一,<strong>这也叫数据的维度话</strong></p>
-</li>
-</ul>
-<h3 id="什么是lua"><a href="#什么是lua" class="headerlink" title="什么是lua"></a>什么是lua</h3><ul>
-<li>当你有这个疑问,你不是一个合格的程序员自己去官网看看</li>
-</ul>
-<p><a href="http://www.lua.org/" target="_blank" rel="noopener">http://www.lua.org/</a></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>代码就不写了,想法都有了,代码不是so easy</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/19/基于“分发层”+“应用层”双层nginx架构提高命中率方案/">展开全文 >></a>
         </p>
       
 
@@ -1015,11 +1015,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
+                <a href="javascript:void(0)" class="js-tag color4">springcloud spring 链路追踪 链路监控</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springcloud spring 链路追踪 链路监控</a>
+                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1027,7 +1027,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">hadoop hadoop伪分布式</a>
+                <a href="javascript:void(0)" class="js-tag color4">hadoop 大数据 bigdata</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1035,11 +1035,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hadoop 大数据 bigdata</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
+                <a href="javascript:void(0)" class="js-tag color3">hadoop hadoop伪分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1047,7 +1043,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">javascript json javascript操作Json</a>
+                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1055,15 +1051,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">javascript json javascript操作Json</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">redis rediscluster 缓存 java springcloud jedis</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">LRU,redis,缓存,算法，淘汰算法</a>
+                <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
+                <a href="javascript:void(0)" class="js-tag color1">LRU,redis,缓存,算法，淘汰算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1107,11 +1107,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">集合框架  java.utils utils list List Map map HashMap hashmap ArrayList arraylist</a>
+                <a href="javascript:void(0)" class="js-tag color4">ribbon retry 重试 超时</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ribbon retry 重试 超时</a>
+                <a href="javascript:void(0)" class="js-tag color2">集合框架  java.utils utils list List Map map HashMap hashmap ArrayList arraylist</a>
               </li>
              
               <li class="article-tag-list-item">
