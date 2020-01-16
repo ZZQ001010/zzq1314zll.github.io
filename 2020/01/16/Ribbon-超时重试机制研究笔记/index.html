@@ -17,7 +17,7 @@
 <meta property="og:description" content="概述研究下ribbon 的重试机制，网上有很多博客就是说一下，怎么配置实现微服务之间调用的重试机制，并没有对这个地方进行深入研究 准备 建两个微服务工程 引入注册中心client ，ribbon ，retry 相关的maven 依赖 debug 启动工程 我还有一篇博客写的是ribbon 是怎么工作的，这个算是对那篇博客的补充  源码阅读自动配置类 上篇博客就看到，ribbon 的集成主要是靠一个">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006tNbRwgy1gaynjbgianj31x00u0kjo.jpg">
-<meta property="og:updated_time" content="2020-01-16T14:01:15.023Z">
+<meta property="og:updated_time" content="2020-01-16T14:09:30.796Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ribbon 超时重试机制研究笔记">
 <meta name="twitter:description" content="概述研究下ribbon 的重试机制，网上有很多博客就是说一下，怎么配置实现微服务之间调用的重试机制，并没有对这个地方进行深入研究 准备 建两个微服务工程 引入注册中心client ，ribbon ，retry 相关的maven 依赖 debug 启动工程 我还有一篇博客写的是ribbon 是怎么工作的，这个算是对那篇博客的补充  源码阅读自动配置类 上篇博客就看到，ribbon 的集成主要是靠一个">
@@ -228,6 +228,11 @@
 </ul>
 <p>这个时候就不是我们想要得到的效果</p>
 <p><strong>希望能够重视这点</strong></p>
+<ul>
+<li>这个地方通过源码其实可以看出来的</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (canRetry(retryPolicy, context) &amp;&amp; !context.isExhaustedOnly()) &#123; <span class="comment">//每次都会走一次canRetry（） 吧canreTry的代码放在下面</span></span><br><span class="line"></span><br><span class="line">				<span class="keyword">try</span> &#123;</span><br><span class="line">					<span class="keyword">if</span> (<span class="keyword">this</span>.logger.isDebugEnabled()) &#123;</span><br><span class="line">						<span class="keyword">this</span>.logger.debug(<span class="string">"Retry: count="</span> + context.getRetryCount());</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="comment">// Reset the last exception, so if we are successful</span></span><br><span class="line">					<span class="comment">// the close interceptors will not think we failed...</span></span><br><span class="line">					lastException = <span class="keyword">null</span>;</span><br><span class="line">					<span class="keyword">return</span> retryCallback.doWithRetry(context);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line"></span><br><span class="line">					lastException = e;</span><br><span class="line"></span><br><span class="line">					<span class="keyword">try</span> &#123;</span><br><span class="line">						registerThrowable(retryPolicy, state, context, e);</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">						<span class="keyword">throw</span> <span class="keyword">new</span> TerminatedRetryException(<span class="string">"Could not register throwable"</span>,</span><br><span class="line">								ex);</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">finally</span> &#123;</span><br><span class="line">						doOnErrorInterceptors(retryCallback, context, e);</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> (canRetry(retryPolicy, context) &amp;&amp; !context.isExhaustedOnly()) &#123;</span><br><span class="line">						<span class="keyword">try</span> &#123;</span><br><span class="line">							backOffPolicy.backOff(backOffContext);</span><br><span class="line">						&#125;</span><br><span class="line">						<span class="keyword">catch</span> (BackOffInterruptedException ex) &#123;</span><br><span class="line">							lastException = e;</span><br><span class="line">							<span class="comment">// back off was prevented by another thread - fail the retry</span></span><br><span class="line">							<span class="keyword">if</span> (<span class="keyword">this</span>.logger.isDebugEnabled()) &#123;</span><br><span class="line">								<span class="keyword">this</span>.logger</span><br><span class="line">										.debug(<span class="string">"Abort retry because interrupted: count="</span></span><br><span class="line">												+ context.getRetryCount());</span><br><span class="line">							&#125;</span><br><span class="line">							<span class="keyword">throw</span> ex;</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> (<span class="keyword">this</span>.logger.isDebugEnabled()) &#123;</span><br><span class="line">						<span class="keyword">this</span>.logger.debug(</span><br><span class="line">								<span class="string">"Checking for rethrow: count="</span> + context.getRetryCount());</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> (shouldRethrow(retryPolicy, context, state)) &#123;</span><br><span class="line">						<span class="keyword">if</span> (<span class="keyword">this</span>.logger.isDebugEnabled()) &#123;</span><br><span class="line">							<span class="keyword">this</span>.logger.debug(<span class="string">"Rethrow in retry for policy: count="</span></span><br><span class="line">									+ context.getRetryCount());</span><br><span class="line">						&#125;</span><br><span class="line">						<span class="keyword">throw</span> RetryTemplate.&lt;E&gt;wrapIfNecessary(e);</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">				<span class="comment">/*</span></span><br><span class="line"><span class="comment">				 * A stateful attempt that can retry may rethrow the exception before now,</span></span><br><span class="line"><span class="comment">				 * but if we get this far in a stateful retry there's a reason for it,</span></span><br><span class="line"><span class="comment">				 * like a circuit breaker or a rollback classifier.</span></span><br><span class="line"><span class="comment">				 */</span></span><br><span class="line">				<span class="keyword">if</span> (state != <span class="keyword">null</span> &amp;&amp; context.hasAttribute(GLOBAL_STATE)) &#123;</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (state == <span class="keyword">null</span> &amp;&amp; <span class="keyword">this</span>.logger.isDebugEnabled()) &#123;</span><br><span class="line">				<span class="keyword">this</span>.logger.debug(</span><br><span class="line">						<span class="string">"Retry failed last attempt: count="</span> + context.getRetryCount());</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			exhausted = <span class="keyword">true</span>;</span><br><span class="line">			<span class="keyword">return</span> handleRetryExhausted(recoveryCallback, context, state);</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">			<span class="keyword">throw</span> RetryTemplate.&lt;E&gt;wrapIfNecessary(e);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">finally</span> &#123;</span><br><span class="line">			close(retryPolicy, context, state, lastException == <span class="keyword">null</span> || exhausted);</span><br><span class="line">			doCloseInterceptors(retryCallback, context, lastException);</span><br><span class="line">			RetrySynchronizationManager.clear();</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canRetry</span><span class="params">(RetryContext context)</span> </span>&#123;</span><br><span class="line">	LoadBalancedRetryContext lbContext = (LoadBalancedRetryContext) context;</span><br><span class="line">	<span class="keyword">if</span> (lbContext.getRetryCount() == <span class="number">0</span> &amp;&amp; lbContext.getServiceInstance() == <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="comment">// We haven't even tried to make the request yet so return true so we do</span></span><br><span class="line">		lbContext.setServiceInstance(</span><br><span class="line">				<span class="keyword">this</span>.serviceInstanceChooser.choose(<span class="keyword">this</span>.serviceName)); <span class="comment">//这里又进行选择</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.policy.canRetryNextServer(lbContext);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
 
@@ -474,15 +479,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Executor juc 线程池 并发 线程</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">springmvc web</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -490,7 +491,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hadoop 大数据 bigdata</a>
+                <a href="javascript:void(0)" class="js-tag color2">hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -502,11 +503,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">java date dateTime LocalDateTime 时间 日期 时间戳</a>
+                <a href="javascript:void(0)" class="js-tag color4">hadoop 大数据 bigdata</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">java date dateTime LocalDateTime 时间 日期 时间戳</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -526,19 +531,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springcloud consul</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">springboot 自动装配 spring</a>
+                <a href="javascript:void(0)" class="js-tag color4">springcloud consul</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">spring springboot springcloud webFlux 包冲突</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">springboot 自动装配 spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -570,11 +575,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ribbon retry 重试 超时</a>
+                <a href="javascript:void(0)" class="js-tag color2">集合框架  java.utils utils list List Map map HashMap hashmap ArrayList arraylist</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">集合框架  java.utils utils list List Map map HashMap hashmap ArrayList arraylist</a>
+                <a href="javascript:void(0)" class="js-tag color4">ribbon retry 重试 超时</a>
               </li>
              
               <li class="article-tag-list-item">
