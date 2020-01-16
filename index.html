@@ -218,6 +218,15 @@
 <p><a href="https://blog.csdn.net/sunxy24/article/details/87839856" target="_blank" rel="noopener">https://blog.csdn.net/sunxy24/article/details/87839856</a></p>
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h2 id="ymal-配置文件"><a href="#ymal-配置文件" class="headerlink" title="ymal 配置文件"></a>ymal 配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ribbon:</span><br><span class="line">  OkToRetryOnAllOperations: true # 是否对所有请求都进行重试</span><br><span class="line">  MaxAutoRetries: 3     #重试次数</span><br><span class="line">  MaxAutoRetriesNextServer: 2   #重试切换实例次数</span><br><span class="line">  ConnectTimeout: 250</span><br><span class="line">  ReadTimeout: 300</span><br><span class="line">  retryableStatusCodes: 503,500 # 这里不配置其实也可以，不配置的时候，仅仅当请求服务实例报错的时候重试，配置了的时候，当请求服务实例出现这里指定的状态，也会重试</span><br><span class="line">logging:</span><br><span class="line">  level:</span><br><span class="line">    org.springframework.*: debug #这里打开之后就可以看到doExecute 执行的重试</span><br></pre></td></tr></table></figure>
 <h2 id="maven"><a href="#maven" class="headerlink" title="maven"></a>maven</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.retry<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-retry<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><p>重试机制和ribbon的负载均衡策略机制其实是存在关联的，如果他们两个不协调，系统也可能出现问题,举个例子:</p>
+<ul>
+<li>如果我们把<code>MaxAutoRetriesNextServer</code> 配置成2 </li>
+<li>如果请求到达customer customer 去执行Rule选举出一个实例作为这次请求的对象，但是这个实例恰好返回500</li>
+<li>这个时候重试机制会进行第重试，这个时候经过Rule 选举出一个故障的实例，这个时候重试次数达到最大，但是还是500</li>
+<li>这个时候customer 就会返回500</li>
+</ul>
+<p>这个时候就不是我们想要得到的效果</p>
+<p><strong>希望能够重视这点</strong></p>
 
       
 
@@ -1220,10 +1229,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Executor juc 线程池 并发 线程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">github openSource</a>
               </li>
              
@@ -1232,7 +1237,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springcloud spring 链路追踪 链路监控</a>
+                <a href="javascript:void(0)" class="js-tag color3">Executor juc 线程池 并发 线程</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1240,19 +1245,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">blog</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">hadoop hadoop伪分布式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">java date dateTime LocalDateTime 时间 日期 时间戳</a>
+                <a href="javascript:void(0)" class="js-tag color4">springcloud spring 链路追踪 链路监控</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1260,11 +1253,31 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">redis rediscluster 缓存 java springcloud jedis</a>
+                <a href="javascript:void(0)" class="js-tag color3">hadoop hadoop伪分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">blog</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">java date dateTime LocalDateTime 时间 日期 时间戳</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">javascript js jquery jq</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">javascript json javascript操作Json</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">javascript form js jquery 前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">redis rediscluster 缓存 java springcloud jedis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1280,15 +1293,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">javascript json javascript操作Json</a>
+                <a href="javascript:void(0)" class="js-tag color3">springboot 自动装配 spring</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">spring springboot springcloud webFlux 包冲突</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">springboot 自动装配 spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1308,7 +1317,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ribbon retry 重试 超时</a>
+                <a href="javascript:void(0)" class="js-tag color1">springboot spring 启动</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1316,11 +1325,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">springboot spring 启动</a>
+                <a href="javascript:void(0)" class="js-tag color3">springcloud springcloud zuul 微服务</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">springcloud springcloud zuul 微服务</a>
+                <a href="javascript:void(0)" class="js-tag color4">ribbon retry 重试 超时</a>
               </li>
              
               <li class="article-tag-list-item">
