@@ -154,6 +154,207 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-java8-LocalDate-Date-LocalDateTime-时间戳的转换" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/11/java8-LocalDate-Date-LocalDateTime-时间戳的转换/">java8 LocalDate Date LocalDateTime 时间戳的转换</a>
+    </h1>
+  
+
+        
+        <a href="/2019/12/11/java8-LocalDate-Date-LocalDateTime-时间戳的转换/" class="archive-article-date">
+  	<time datetime="2019-12-11T10:06:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>.LocalDate转Date</span><br><span class="line"></span><br><span class="line">LocalDate nowLocalDate = LocalDate.now();</span><br><span class="line">Date date = Date.from(localDate.atStartOfDay(ZoneOffset.ofHours(<span class="number">8</span>)).toInstant());</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>.LocalDateTime转Date</span><br><span class="line"></span><br><span class="line">LocalDateTime localDateTime = LocalDateTime.now();</span><br><span class="line">Date date = Date.from(localDateTime.atZone(ZoneOffset.ofHours(<span class="number">8</span>)).toInstant());</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>.Date转LocalDateTime(LocalDate)</span><br><span class="line"></span><br><span class="line">Date date =newDate();</span><br><span class="line">LocalDateTime localDateTime = date.toInstant().atZone(ZoneOffset.ofHours(<span class="number">8</span>)).toLocalDateTime();</span><br><span class="line">LocalDate localDate = date.toInstant().atZone(ZoneOffset.ofHours(<span class="number">8</span>)).toLocalDate();</span><br><span class="line"></span><br><span class="line"><span class="number">4</span>.LocalDate转时间戳</span><br><span class="line"></span><br><span class="line">LocalDate localDate = LocalDate.now();</span><br><span class="line">longtimestamp = localDate.atStartOfDay(ZoneOffset.ofHours(<span class="number">8</span>)).toInstant().toEpochMilli();</span><br><span class="line"></span><br><span class="line"><span class="number">5</span>.LocalDateTime转时间戳</span><br><span class="line"></span><br><span class="line">LocalDateTime localDateTime = LocalDateTime.now();</span><br><span class="line">longtimestamp = localDateTime.toInstant(ZoneOffset.ofHours(<span class="number">8</span>)).toEpochMilli();</span><br><span class="line"></span><br><span class="line"><span class="number">6</span>.时间戳转LocalDateTime(LocalDate)</span><br><span class="line"></span><br><span class="line">longtimestamp = System.currentTimeMillis();</span><br><span class="line">LocalDate localDate = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(<span class="number">8</span>)).toLocalDate();</span><br><span class="line">LocalDateTime localDateTime = Instant.ofEpochMilli(timestamp).atZone(ZoneOffset.ofHours(<span class="number">8</span>)).toLocalDateTime();</span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">java date dateTime LocalDateTime 时间 日期 时间戳</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/12/11/java8-LocalDate-Date-LocalDateTime-时间戳的转换/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-spring-batch-的故事" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/10/spring-batch-的故事/">spring batch 的故事</a>
+    </h1>
+  
+
+        
+        <a href="/2019/12/10/spring-batch-的故事/" class="archive-article-date">
+  	<time datetime="2019-12-10T15:07:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h1><p><code>springbatch</code> 是一个开源离线批处理框架</p>
+<h2 id="1-1-Spring-batch-架构"><a href="#1-1-Spring-batch-架构" class="headerlink" title="1.1 Spring batch 架构"></a>1.1 Spring batch 架构</h2><p><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9t429nbzsj30mg0fgdha.jpg" alt="avatar"></p>
+<ol>
+<li>核心层包括启动和控制所需要的核心类，如： <code>JobLauncher</code>,<code>Job</code>,<code>step</code>,</li>
+<li>应用层是建立在基础架构层上，基础架构提供通用的读、写和服务处理,可以被应用层和核心层使用</li>
+<li>springbatch 的三层架构体系使得springbatch 架构不同层次进行拓展，避免不同层级之间的影响<h2 id="1-2-面向chunk的处理"><a href="#1-2-面向chunk的处理" class="headerlink" title="1.2 面向chunk的处理"></a>1.2 面向chunk的处理</h2>面向trunk处理，支持多次读，一次写，避免了多次对资源的写入，大大提升了批处理的应用效率<h2 id="1-3-事务管理能力"><a href="#1-3-事务管理能力" class="headerlink" title="1.3 事务管理能力"></a>1.3 事务管理能力</h2>Spring Batch 默认采用spring声明式事务管理模型，面向chunk的操作支持，同时支持每个tasket操作设置<strong>细粒度的事务配置</strong> ，<strong>隔离级别</strong> ,<strong>传播行为</strong>，<strong>超时设置</strong><h2 id="1-4-支持非顺序的step"><a href="#1-4-支持非顺序的step" class="headerlink" title="1.4 支持非顺序的step"></a>1.4 支持非顺序的step</h2> 2.0 之前都是顺序执行step，2.0 之后可以判断<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9t8e8us6kj31300eg0v9.jpg" alt="avaer"><br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9tbgjfspsj30oa0ak7fa.jpg" alt="avaer"></li>
+</ol>
+<ul>
+<li>springbatch 2.0 之前，没有itemProcessor，使用的是ItemTransformer </li>
+<li>2.0 之后ItemTransformer重新命名为Itemprocessor 并与itemReader itemWriter 提升为相同的层级<h2 id="1-5-拓展性"><a href="#1-5-拓展性" class="headerlink" title="1.5 拓展性"></a>1.5 拓展性</h2>spring Batch 1.X只能在单个jvm中执行，支持在单个jvm多个线程并发执行，在springbatch 2.0 新增<strong>远程分片</strong>，<strong>分区</strong>两个新功能<h2 id="1-6-spring-batch-2-2-新特性"><a href="#1-6-spring-batch-2-2-新特性" class="headerlink" title="1.6 spring batch 2.2 新特性"></a>1.6 spring batch 2.2 新特性</h2></li>
+<li>Srping Data 集成</li>
+<li>支持java 配置</li>
+<li>重试模块的重构(retry)</li>
+<li>作业参数的变化<h1 id="2-Spring-Batch-中的一些类概念"><a href="#2-Spring-Batch-中的一些类概念" class="headerlink" title="2. Spring Batch 中的一些类概念"></a>2. Spring Batch 中的一些类概念</h1></li>
+<li>Job Repository 作业仓库，负责Job Step的状态保存 </li>
+<li>Job launcher 作业调度器， 提供执行Job的入口</li>
+<li>Job 作业，由多个Step 组成，封装了整个批处理操作</li>
+<li>Tasklet  Step中具体执行逻辑操作，可以重复执行，可以设置成具体的同步异步操作等</li>
+<li>Chunk 给定数量的item 集合，可以定义对chunk 的读操作，处理操作，写操作，提交间隔等，这就是spring batch 的一个重要特性</li>
+<li>Item 一条数据记录</li>
+<li>ItemReader 从数据源中读取文件</li>
+<li>ItemProcesseor itemreader 读取完之后，进行数据处理</li>
+<li>ItemWriter 对数据进行写入</li>
+</ul>
+<h1 id="3-Spring-Batch-基本概念"><a href="#3-Spring-Batch-基本概念" class="headerlink" title="3. Spring Batch 基本概念"></a>3. Spring Batch 基本概念</h1><p>spring batch 使用经典的批处理框架模型,架构图如下<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9trexgbxdj317m0la11w.jpg" alt="avaer"><br>springbatch 主要用到的领域对象:<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9trguuz6lj317s0aqah9.jpg" alt="avaer"><br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9trhwxeggj317s0rawux.jpg" alt="avaer"></p>
+<h2 id="3-1-Job"><a href="#3-1-Job" class="headerlink" title="3.1 Job"></a>3.1 Job</h2><ul>
+<li>Job有自己的名字，可以定义Step的顺序，Step的个数，以及定义的作业是否可以重启，</li>
+<li>Job 运行的时候会产生一个Job Instance ，<code>Job instance</code> 中包含job运行期间产生的数据，以及job执行的状态</li>
+<li><code>Job Instance</code> 通过JobName 和Job Parameter来区分(jobname+jobparameter 可以确定一个job)</li>
+<li>Job 每次执行都有一个Job Execution（作业执行者）Job Execution 负责job的执行</li>
+<li>一个job 可能一个job Instance 只需要改变参数</li>
+<li>一个job instance 可能有多个 Job Execution <h2 id="3-2-Job-Instance"><a href="#3-2-Job-Instance" class="headerlink" title="3.2 Job Instance"></a>3.2 Job Instance</h2></li>
+<li>Job Instance 来源有两个<ul>
+<li>一种是通过job name jobParameter 从Job Repository 中查询查询出来</li>
+<li>一种是直接通过job 创建一个实例</li>
+</ul>
+</li>
+<li>Job Instance 对应的数据表示 BATCH_JOB_INSTANCE </li>
+<li>Job Instance 对应的类是<code>org.springframework.batch.core.JobInstance</code></li>
+<li>每次执行job 的时候都会创建一个新的Job Intance 和Job Execution </li>
+<li>已完成的Job Instance 不能被重复执行</li>
+<li>在同一时刻，只能有一个Job Execution可以执行同一个Job Instance<h2 id="3-3-Job-Parameter"><a href="#3-3-Job-Parameter" class="headerlink" title="3.3 Job Parameter"></a>3.3 Job Parameter</h2></li>
+<li>Job 通过job parameter 来区分不同的Job Instance<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9ts8ijgx4j30t803y0tf.jpg" alt="avaer"></li>
+<li>通过<code>JobParameterBulider</code>来构建JobParameter</li>
+<li>JobParameter 对应数据表是BATCH_JOB_EXECUTION_PARAM<h2 id="3-4-Job-Execution"><a href="#3-4-Job-Execution" class="headerlink" title="3.4 Job Execution"></a>3.4 Job Execution</h2></li>
+<li>Job Execution 对应的数据表是BATCH_JOB_EXECUTION</li>
+<li>关键属性说明<br><img src="https://tva1.sinaimg.cn/large/006tNbRwgy1g9u6htesa1j31800i2k53.jpg" alt="avaer"><h2 id="3-5-Step"><a href="#3-5-Step" class="headerlink" title="3.5 Step"></a>3.5 Step</h2></li>
+<li>step 的复杂度是有业务复杂度决定的</li>
+<li>一个job有多个step ，一个step有一到多个step execution(当一个step 执行失败的时候，重新执行会重新生成一个step execution)</li>
+<li>一个job execution 有一到多个step execution（一个job 有多个step 的时候，一个job execution 就会有多个 step execution）</li>
+<li>step 中可以配置tasklet，partition，job，flow<h2 id="3-6-Step-Execution"><a href="#3-6-Step-Execution" class="headerlink" title="3.6 Step Execution"></a>3.6 Step Execution</h2></li>
+<li>Step Execution 是Step 执行的句柄，一次Step 执行可能成功也可能失败</li>
+<li>Step Execution 对应的数据是 BATCH_STEP_EXECUTION</li>
+<li>Step Execution 对应的类示 org.springframework.batch.core.StepExecution</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">spring springbatch 离线批处理 批处理</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/12/10/spring-batch-的故事/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-java-utils-集合框架" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -699,7 +900,7 @@ Error: Spawn failed
 </li>
 </ul>
 <h3 id="3-1-2-解释下参数的意思"><a href="#3-1-2-解释下参数的意思" class="headerlink" title="3.1.2 解释下参数的意思"></a>3.1.2 解释下参数的意思</h3><ul>
-<li>join 吧当前节点接入集群中<h2 id="3-2-consul-客户端注册"><a href="#3-2-consul-客户端注册" class="headerlink" title="3.2 consul 客户端注册"></a>3.2 consul 客户端注册</h2></li>
+<li><strong>join 吧当前节点接入集群中</strong><h2 id="3-2-consul-客户端注册"><a href="#3-2-consul-客户端注册" class="headerlink" title="3.2 consul 客户端注册"></a>3.2 consul 客户端注册</h2></li>
 <li>使用springboot yml 中这样配置就ok<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">    server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">9996</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">dc1-consul-provider</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    consul:</span></span><br><span class="line"><span class="attr">      host:</span> <span class="number">10.10</span><span class="number">.200</span><span class="number">.66</span><span class="string">:8500,10.10.200.125:8500,10.10.200.128:8500</span></span><br><span class="line"><span class="attr">      discovery:</span></span><br><span class="line"><span class="attr">        service-name:</span> <span class="string">dc1-consul-provider</span></span><br><span class="line"><span class="attr">        register-health-check:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
@@ -1038,155 +1239,6 @@ git push
 
 
   
-    <article id="post-springmvc-i18n" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/26/springmvc-i18n/">springmvc i18n</a>
-    </h1>
-  
-
-        
-        <a href="/2019/11/26/springmvc-i18n/" class="archive-article-date">
-  	<time datetime="2019-11-26T13:06:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-初始化容器加载数据"><a href="#1-初始化容器加载数据" class="headerlink" title="1. 初始化容器加载数据"></a>1. 初始化容器加载数据</h2><ul>
-<li>当应用容器(本文用tomcat代替)启动的时候<code>org.apache.catalina.core.StandardContext</code>实例化servlet 之后，接着初始化 <code>org.springframework.web.servlet.DispatcherServlet</code>的</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/11/26/springmvc-i18n/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-研究下springcloud-config" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/18/研究下springcloud-config/">研究下springcloud-config</a>
-    </h1>
-  
-
-        
-        <a href="/2019/11/18/研究下springcloud-config/" class="archive-article-date">
-  	<time datetime="2019-11-18T08:34:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h1><h2 id="1-1-配置中心的由来"><a href="#1-1-配置中心的由来" class="headerlink" title="1.1 配置中心的由来"></a>1.1 配置中心的由来</h2><pre><code>分布式系统，部署在N台机器上，线上一台一台的重启机器肯定是不行的，并且维护成本是非常的高，所以配置中心诞生了，可以管理不同环境（dev,test,stage,prod）和不同配置，以及在修改配置之后实时同步到应用上进行刷新
-</code></pre><h1 id="2-spring-cloud-config"><a href="#2-spring-cloud-config" class="headerlink" title="2. spring cloud config"></a>2. spring cloud config</h1><pre><code>spring cloud config 是一个集中化外部配置分布式系统，有服务端和客户端组成，不依赖注册中心，他是一个独立的配置中心，spring cloud 存储配置有多重方式，jdbc,vault ,native,svn,git默认是git
-</code></pre><h2 id="2-1-hello-world"><a href="#2-1-hello-world" class="headerlink" title="2.1 hello world"></a>2.1 hello world</h2><h3 id="2-1-1-构建springcloud-config-server"><a href="#2-1-1-构建springcloud-config-server" class="headerlink" title="2.1.1 构建springcloud config server"></a>2.1.1 构建springcloud config server</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-config-server<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-1-2-编写注册类"><a href="#2-1-2-编写注册类" class="headerlink" title="2.1.2 编写注册类"></a>2.1.2 编写注册类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableConfigServer</span>  <span class="comment">//装配springcloud server </span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringcloudConfigServer9999Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(SpringcloudConfigServer9999Application.class, args);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-1-3-application-yml-的配置"><a href="#2-1-3-application-yml-的配置" class="headerlink" title="2.1.3 application.yml 的配置"></a>2.1.3 application.yml 的配置</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">    server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">9999</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      server:</span></span><br><span class="line"><span class="attr">        git:</span></span><br><span class="line"><span class="attr">          uri:</span> <span class="attr">https://github.com/zzq1314zll/spring-cloud-config.git</span></span><br><span class="line"><span class="attr">          search-paths:</span> <span class="string">SC-BOOK-CONFIG</span> <span class="comment"># 搜索配置目录下所有满足条件的配置文件，用户可以根据需求添加多个目录目录之间使用逗号隔开</span></span><br><span class="line"><span class="attr">          username:</span> <span class="number">2766090785</span><span class="string">@qq.com</span></span><br><span class="line"><span class="attr">          password:</span> <span class="string">***</span>  </span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">spring-cloud-config-git</span> <span class="comment"># 微服务名字</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-1-4-启动工程验证程序"><a href="#2-1-4-启动工程验证程序" class="headerlink" title="2.1.4 启动工程验证程序"></a>2.1.4 启动工程验证程序</h3><pre><code>访问地址
-http://ip:port/config-info/dev/master 
-</code></pre><h2 id="2-2-创建springcloud-config-工程"><a href="#2-2-创建springcloud-config-工程" class="headerlink" title="2.2 创建springcloud-config 工程"></a>2.2 创建springcloud-config 工程</h2><h3 id="2-2-1-引入依赖"><a href="#2-2-1-引入依赖" class="headerlink" title="2.2.1 引入依赖"></a>2.2.1 引入依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-config-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-2-2-编写启动类以及调用springcloud-server的程序"><a href="#2-2-2-编写启动类以及调用springcloud-server的程序" class="headerlink" title="2.2.2 编写启动类以及调用springcloud-server的程序"></a>2.2.2 编写启动类以及调用springcloud-server的程序</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringcloudConfigClient9998Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(SpringcloudConfigClient9998Application.class, args);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"cn.springcloud.book"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigInfoProperties</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String config ;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfiguration</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//关闭端点安全校验</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        http.csrf().disable();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigController</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ConfigInfoProperties configInfoProperties ;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/getConfigInfo"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getConfigInfo</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span>  configInfoProperties.getConfig();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-2-3-编写bootstarp-yml和application-yml-文件"><a href="#2-2-3-编写bootstarp-yml和application-yml-文件" class="headerlink" title="2.2.3 编写bootstarp.yml和application.yml 文件"></a>2.2.3 编写bootstarp.yml和application.yml 文件</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># bootstarp.yml 文件</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      label:</span> <span class="string">master</span></span><br><span class="line"><span class="attr">      uri:</span> <span class="attr">http://localhost:9999</span></span><br><span class="line"><span class="attr">      name:</span> <span class="string">config-info</span></span><br><span class="line"><span class="attr">      profile:</span> <span class="string">dev</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># application.yml 文件</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line"><span class="attr">  port:</span> <span class="number">9998</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">springcloud-config-client-9998</span></span><br><span class="line"><span class="attr">logging:</span></span><br><span class="line"><span class="attr">  level:</span></span><br><span class="line"><span class="attr">    web:</span> <span class="string">debug</span></span><br><span class="line"><span class="attr">management:</span></span><br><span class="line"><span class="attr">  endpoints:</span></span><br><span class="line"><span class="attr">    web:</span></span><br><span class="line"><span class="attr">      exposure:</span></span><br><span class="line"><span class="attr">        exclude:</span> <span class="string">*</span></span><br><span class="line"><span class="attr">  endpoint:</span></span><br><span class="line"><span class="attr">    health:</span></span><br><span class="line"><span class="attr">      show-details:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-2-4-验证程序"><a href="#2-2-4-验证程序" class="headerlink" title="2.2.4 验证程序"></a>2.2.4 验证程序</h3><pre><code>启动程
-</code></pre>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">springcloud、springcloud config</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/11/18/研究下springcloud-config/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
@@ -1284,27 +1336,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">github openSource</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Executor juc 线程池 并发 线程</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">hadoop</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">springcloud spring 链路追踪 链路监控</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">hadoop 大数据 bigdata</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">blog</a>
+                <a href="javascript:void(0)" class="js-tag color3">github openSource</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1312,11 +1348,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">hadoop hadoop伪分布式</a>
+                <a href="javascript:void(0)" class="js-tag color4">springcloud spring 链路追踪 链路监控</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">java date dateTime LocalDateTime 时间 日期 时间戳</a>
+                <a href="javascript:void(0)" class="js-tag color2">hadoop</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">blog</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">hadoop hadoop伪分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1324,11 +1368,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">javascript json javascript操作Json</a>
+                <a href="javascript:void(0)" class="js-tag color3">java date dateTime LocalDateTime 时间 日期 时间戳</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">LRU,redis,缓存,算法，淘汰算法</a>
+                <a href="javascript:void(0)" class="js-tag color4">hadoop 大数据 bigdata</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1340,7 +1384,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
+                <a href="javascript:void(0)" class="js-tag color1">LRU,redis,缓存,算法，淘汰算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1348,7 +1392,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">springboot 自动装配 spring</a>
+                <a href="javascript:void(0)" class="js-tag color4">spring springbatch 离线批处理 批处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">javascript json javascript操作Json</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1356,11 +1404,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">hexo 使用 问题 hexo问题</a>
+                <a href="javascript:void(0)" class="js-tag color3">springboot 自动装配 spring</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">spring 事务 隔离级别 特性</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">hexo 使用 问题 hexo问题</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1372,7 +1424,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">ribbon retry 重试 超时</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">springcloud ribbon</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">springboot spring 启动</a>
               </li>
              
               <li class="article-tag-list-item">
